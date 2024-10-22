@@ -24,8 +24,9 @@ public class Turnir extends AbstractDomainObject {
     private Grad grad;
     private Administrator administrator;
     private ArrayList<Utakmica> utakmice;
+    private ArrayList<Tabela> tabela;
 
-    public Turnir(Long turnirID, String nazivTurnira, Date datumPocetka, Date datumKraja, String opis, String pobednik, Grad grad, Administrator administrator, ArrayList<Utakmica> utakmice) {
+    public Turnir(Long turnirID, String nazivTurnira, Date datumPocetka, Date datumKraja, String opis, String pobednik, Grad grad, Administrator administrator, ArrayList<Utakmica> utakmice, ArrayList<Tabela> tabela) {
         this.turnirID = turnirID;
         this.nazivTurnira = nazivTurnira;
         this.datumPocetka = datumPocetka;
@@ -35,6 +36,7 @@ public class Turnir extends AbstractDomainObject {
         this.grad = grad;
         this.administrator = administrator;
         this.utakmice = utakmice;
+        this.tabela = tabela;
     }
 
     public Turnir() {
@@ -69,7 +71,7 @@ public class Turnir extends AbstractDomainObject {
 
             Turnir t = new Turnir(rs.getLong("turnirID"), rs.getString("nazivTurnira"),
                     rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("slobodanProlaz"),
-                    rs.getString("pobednik"),g, a, null);
+                    rs.getString("pobednik"),g, a, null, null);
 
             lista.add(t);
         }
@@ -179,6 +181,14 @@ public class Turnir extends AbstractDomainObject {
 
     public void setPobednik(String pobednik) {
         this.pobednik = pobednik;
+    }
+
+    public ArrayList<Tabela> getTabela() {
+        return tabela;
+    }
+
+    public void setTabela(ArrayList<Tabela> tabela) {
+        this.tabela = tabela;
     }
 
 

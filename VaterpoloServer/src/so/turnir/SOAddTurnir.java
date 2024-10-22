@@ -6,6 +6,7 @@ package so.turnir;
 
 import db.DBBroker;
 import domain.AbstractDomainObject;
+import domain.Tabela;
 import domain.Turnir;
 import domain.Utakmica;
 import java.sql.PreparedStatement;
@@ -57,6 +58,13 @@ public class SOAddTurnir extends AbstractSO {
         for (Utakmica utakmica : turnir.getUtakmice()) {
             utakmica.setTurnir(turnir);
             DBBroker.getInstance().insert(utakmica);
+        }
+        
+        if (turnir.getTabela()!=null) {
+            for (Tabela t : turnir.getTabela()) {
+                t.setTurnir(turnir);
+                DBBroker.getInstance().insert(t);
+            }
         }
 
     }

@@ -104,6 +104,9 @@ public class ThreadClient extends Thread {
                 case Operation.GET_ALL_VATERPOLISTA:
                     response.setData(ServerController.getInstance().getAllVaterpolista());
                     break;
+                case Operation.GET_ALL_TABELA:
+                    response.setData(ServerController.getInstance().getAllTabela((Turnir) request.getData()));
+                    break;
                 case Operation.LOGIN:
                     Administrator administrator = (Administrator) request.getData();
                     Administrator ulogovani = ServerController.getInstance().login(administrator);

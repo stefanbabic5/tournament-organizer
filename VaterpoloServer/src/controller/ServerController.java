@@ -7,6 +7,7 @@ package controller;
 import domain.Administrator;
 import domain.Grad;
 import domain.Igrac;
+import domain.Tabela;
 import domain.Tim;
 import domain.Turnir;
 import domain.Utakmica;
@@ -16,6 +17,7 @@ import so.administrator.SOGetAllAdministrator;
 import so.grad.SOGetAllGrad;
 import so.igrac.SOGetAllIgrac;
 import so.login.SOLogin;
+import so.tabela.SOGetAllTabela;
 import so.tim.SOAddTim;
 import so.tim.SODeleteTim;
 import so.tim.SOGetAllTim;
@@ -153,6 +155,16 @@ public class ServerController {
         u.setTurnir(t);
         
         so.templateExecute(u);
+        return so.getLista();
+    }
+    
+    public ArrayList<Tabela> getAllTabela(Turnir t) throws Exception {
+        SOGetAllTabela so = new SOGetAllTabela();
+        
+        Tabela st = new Tabela();
+        st.setTurnir(t);
+        
+        so.templateExecute(st);
         return so.getLista();
     }
 

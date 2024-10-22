@@ -40,6 +40,19 @@ public class Utakmica extends AbstractDomainObject {
         this.penaliPrvi = penaliPrvi;
         this.penaliDrugi = penaliDrugi;
     }
+    
+    public Utakmica(Utakmica u) {
+        this.turnir = u.getTurnir();
+        this.rbUtakmice = u.getRbUtakmice();
+        this.kolo = u.getKolo();
+        this.brojGolovaPrviTim = u.getBrojGolovaPrviTim();
+        this.brojGolovaDrugiTim = u.getBrojGolovaDrugiTim();
+        this.prviTim = u.getPrviTim();
+        this.drugiTim = u.getDrugiTim();
+        this.pobednik = u.getPobednik();
+        this.penaliPrvi = u.getPenaliPrvi();
+        this.penaliDrugi = u.getPenaliDrugi();
+    }
 
     @Override
     public String nazivTabele() {
@@ -77,7 +90,7 @@ public class Utakmica extends AbstractDomainObject {
 
             Turnir t = new Turnir(rs.getLong("turnirID"), rs.getString("nazivTurnira"),
                     rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("slobodanProlaz"),
-                    rs.getString("pobednik"), g, a, null);
+                    rs.getString("pobednik"), g, a, null, null);
 
             Grad prviGrad = new Grad(rs.getLong("prviGrad.GradID"),
                     rs.getString("prviGrad.NazivGrada"));
@@ -215,6 +228,11 @@ public class Utakmica extends AbstractDomainObject {
 
     public void setPenaliDrugi(Integer penaliDrugi) {
         this.penaliDrugi = penaliDrugi;
+    }
+
+    @Override
+    public String toString() {
+        return "Kolo " + kolo + ": rb" + rbUtakmice + ": " + prviTim + " : " + drugiTim;
     }
 
     

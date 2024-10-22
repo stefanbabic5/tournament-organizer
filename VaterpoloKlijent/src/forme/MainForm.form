@@ -178,19 +178,21 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="lblNaziv" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblGrad" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDP" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDP" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblDK" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTip" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="txtDatumPocetka" alignment="1" pref="664" max="32767" attributes="0"/>
                               <Component id="cmbGrad" alignment="1" max="32767" attributes="0"/>
                               <Component id="txtNaziv" alignment="1" max="32767" attributes="0"/>
                               <Component id="txtDatumKraja" max="32767" attributes="0"/>
                               <Component id="cbZreb" alignment="0" min="-2" pref="280" max="-2" attributes="0"/>
+                              <Component id="cmbTip" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -221,7 +223,12 @@
                       <Component id="txtDatumKraja" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblDK" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="9" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cmbTip" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblTip" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Component id="cbZreb" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="pnlUcesnik" min="-2" max="-2" attributes="0"/>
@@ -471,6 +478,24 @@
         <Component class="javax.swing.JCheckBox" name="cbZreb">
           <Properties>
             <Property name="text" type="java.lang.String" value="Generisi zreb"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cmbTip">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="2">
+                <StringItem index="0" value="Kup"/>
+                <StringItem index="1" value="Liga"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTip">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tip turnira"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -10,11 +10,13 @@ import formeVaterpolista.FormPretragaVaterpoliste;
 import controller.ClientController;
 import domain.Administrator;
 import domain.Grad;
+import domain.Tabela;
 import domain.Tim;
 import domain.Turnir;
 import domain.Utakmica;
 import formeTim.FormNoviTim;
 import formeTim.FormPretragaTimova;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,6 +85,8 @@ public class MainForm extends javax.swing.JFrame {
         btnMoveToBottom = new javax.swing.JButton();
         btnEvidentiraj = new javax.swing.JButton();
         cbZreb = new javax.swing.JCheckBox();
+        cmbTip = new javax.swing.JComboBox<>();
+        lblTip = new javax.swing.JLabel();
         btnSrpski = new javax.swing.JButton();
         btnEngleski = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -249,6 +253,10 @@ public class MainForm extends javax.swing.JFrame {
 
         cbZreb.setText("Generisi zreb");
 
+        cmbTip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kup", "Liga" }));
+
+        lblTip.setText("Tip turnira");
+
         javax.swing.GroupLayout pnlTurnirLayout = new javax.swing.GroupLayout(pnlTurnir);
         pnlTurnir.setLayout(pnlTurnirLayout);
         pnlTurnirLayout.setHorizontalGroup(
@@ -266,18 +274,20 @@ public class MainForm extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTurnirLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblNaziv)
                             .addComponent(lblGrad)
-                            .addComponent(lblDP)
-                            .addComponent(lblDK))
-                        .addGap(18, 18, Short.MAX_VALUE)
+                            .addComponent(lblDP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDK)
+                            .addComponent(lblTip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDatumPocetka, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
                             .addComponent(cmbGrad, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtNaziv, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtDatumKraja)
-                            .addComponent(cbZreb, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cbZreb, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbTip, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         pnlTurnirLayout.setVerticalGroup(
@@ -299,7 +309,11 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDatumKraja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDK))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTip))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(cbZreb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlUcesnik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,10 +452,10 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_miPretragaTurniraActionPerformed
 
     private void miOdjavaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miOdjavaActionPerformed
-        
-        int result = JOptionPane.showConfirmDialog(this, 
-                ResourceBundle.getBundle("resource/messages").getString("odjava_msg"), 
-                ResourceBundle.getBundle("resource/messages").getString("konfirmacija"), 
+
+        int result = JOptionPane.showConfirmDialog(this,
+                ResourceBundle.getBundle("resource/messages").getString("odjava_msg"),
+                ResourceBundle.getBundle("resource/messages").getString("konfirmacija"),
                 JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.NO_OPTION) {
@@ -453,112 +467,20 @@ public class MainForm extends javax.swing.JFrame {
             Session.getInstance().setUlogovani(null);
             this.dispose();
         }
-        
+
     }//GEN-LAST:event_miOdjavaActionPerformed
 
     private void btnEvidentirajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEvidentirajActionPerformed
 
-        try {
-            if (txtDatumKraja.getText().isEmpty() || txtDatumPocetka.getText().isEmpty() || txtNaziv.getText().isEmpty() ) {
-                JOptionPane.showMessageDialog(this, 
-                        ResourceBundle.getBundle("resource/messages").getString("polja_msg"));
-                return;
-            }
-            
-            String opis = "";
-            ArrayList<Utakmica> utakmice = new ArrayList<>();
-            
-            String naziv = txtNaziv.getText();
-            Grad grad = (Grad) cmbGrad.getSelectedItem();
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            Date datumPocetka = sdf.parse(txtDatumPocetka.getText());
-            Date datumKraja = sdf.parse(txtDatumKraja.getText());
-            
-            if (!datumPocetka.before(datumKraja)) {
-                JOptionPane.showMessageDialog(this, 
-                        ResourceBundle.getBundle("resource.messages").getString("dpdk"));
-                return;
-            }
-            
-            if (datumPocetka.before(new Date()) && cbZreb.isEnabled()) {
-                JOptionPane.showMessageDialog(this, 
-                        ResourceBundle.getBundle("resource.messages").getString("zreb_err"));
-                return;
-            }
-
-            TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-            ArrayList<Tim> ucesnici = tm.getLista();
-            
-            ArrayList<Tim> pobednici;
-            
-            if (cbZreb.isSelected()) {
-                Collections.shuffle(ucesnici);
-            }
-            
-            if (isPowerOfTwo(ucesnici.size())) { opis = "N/A  "; }
-            
-            while (!isPowerOfTwo(ucesnici.size())) {
-                ucesnici.add(prazan);
-            }
-            
-            int brojKola = (int) Math.ceil(Math.log(ucesnici.size()) / Math.log(2));
-            String kolo;
-            
-            for (int runda = 1; runda <= brojKola; runda++) {
-                
-                int brojac = 0;
-                pobednici = new ArrayList<>();
-                
-                if (runda == brojKola) {
-                    kolo = "Finale";
-                } else {
-                    kolo = Integer.toString(runda);
-                }
-                
-                for (int i = 0; i < ucesnici.size() / 2; i++) {
-                    
-                    Tim tim1 = ucesnici.get(i);
-                    Tim tim2 = ucesnici.get(ucesnici.size() - i - 1);
-                    Utakmica u = new Utakmica(null, ++brojac, kolo, null, null, 
-                            tim1, tim2, prazan, null, null);
-                    
-                    if (tim2.equals(prazan) && runda == 1) {
-                        u.setPobednik(tim1);
-                        opis += u.getPobednik().getNazivTima() + ", ";
-                    } 
-                    
-                    if (runda != 1 && (tim2.equals(prazan) || tim1.equals(prazan))) {
-                        u.setPobednik(prazan);
-                    }
-                    
-                    pobednici.add(u.getPobednik());
-                    utakmice.add(u);
-                    
-                }
-                
-                ucesnici = new ArrayList<>(pobednici);
-                
-            }
-            
-            for (int i = 1; i < brojKola-1; i++) {
-                sortiraj(utakmice, i);
-            }
-            
-            if (opis.length()>2) opis = opis.substring(0, opis.length()-2);
-            Turnir turnir = new Turnir(null, naziv, datumPocetka, datumKraja,
-                    opis, "", grad, ulogovani, utakmice);
-
-            ClientController.getInstance().addTurnir(turnir);
-            resetujFormu();
-            
-            JOptionPane.showMessageDialog(this, 
-                    ResourceBundle.getBundle("resource/messages").getString("kreiran_turnir_msg"));
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ResourceBundle.getBundle("resource.messages").getString(ex.getMessage()));
-            izbaciPrazne();
-            //Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        switch (cmbTip.getSelectedItem().toString()) {
+            case "Kup":
+                kreirajKup();
+                break;
+            case "Liga":
+                kreirajLigu();
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Nije podrzan tip turnira.");
         }
 
     }//GEN-LAST:event_btnEvidentirajActionPerformed
@@ -580,7 +502,7 @@ public class MainForm extends javax.swing.JFrame {
             cmbTim.addItem(tm.obrisiTim(row));
             cmbTim.setEnabled(true);
             btnDodaj.setEnabled(true);
-            
+
             if (tm.getLista().isEmpty()) {
                 btnEvidentiraj.setEnabled(false);
             }
@@ -591,10 +513,10 @@ public class MainForm extends javax.swing.JFrame {
 
         Tim t = (Tim) cmbTim.getSelectedItem();
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        
+
         tm.dodajTim(t);
         cmbTim.removeItem(cmbTim.getSelectedItem());
-        if (cmbTim.getModel().getSize() == 0) { 
+        if (cmbTim.getModel().getSize() == 0) {
             cmbTim.setEnabled(false);
             btnDodaj.setEnabled(false);
         }
@@ -632,7 +554,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnMoveToTopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoveToTopActionPerformed
         int row = tblTimovi.getSelectedRow();
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        
+
         if (row > 0) {
             Tim t = tm.vratiTim(row);
             tm.obrisiTim(row);
@@ -644,7 +566,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnMoveToBottomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoveToBottomActionPerformed
         int row = tblTimovi.getSelectedRow();
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        
+
         if (row >= 0) {
             Tim t = tm.vratiTim(row);
             tm.obrisiTim(row);
@@ -656,7 +578,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoveUpActionPerformed
         int row = tblTimovi.getSelectedRow();
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        
+
         if (row > 0) {
             Tim t = tm.vratiTim(row);
             tm.obrisiTim(row);
@@ -668,7 +590,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnMoveDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoveDownActionPerformed
         int row = tblTimovi.getSelectedRow();
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        
+
         if (row >= 0 && row < tm.getLista().size() - 1) {
             Tim t = tm.vratiTim(row);
             tm.obrisiTim(row);
@@ -690,6 +612,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbZreb;
     private javax.swing.JComboBox cmbGrad;
     private javax.swing.JComboBox cmbTim;
+    private javax.swing.JComboBox<String> cmbTip;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDK;
@@ -697,6 +620,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblGrad;
     private javax.swing.JLabel lblNaziv;
     private javax.swing.JLabel lblTimovi;
+    private javax.swing.JLabel lblTip;
     private javax.swing.JLabel lblUlogovani;
     private javax.swing.JMenu mOdjava;
     private javax.swing.JMenu mTim;
@@ -715,6 +639,183 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtDatumPocetka;
     private javax.swing.JTextField txtNaziv;
     // End of variables declaration//GEN-END:variables
+
+    private void kreirajKup() {
+        try {
+            if (txtDatumKraja.getText().isEmpty() || txtDatumPocetka.getText().isEmpty() || txtNaziv.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        ResourceBundle.getBundle("resource/messages").getString("polja_msg"));
+                return;
+            }
+
+            String opis = "";
+            ArrayList<Utakmica> utakmice = new ArrayList<>();
+
+            String naziv = txtNaziv.getText();
+            Grad grad = (Grad) cmbGrad.getSelectedItem();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            Date datumPocetka = sdf.parse(txtDatumPocetka.getText());
+            Date datumKraja = sdf.parse(txtDatumKraja.getText());
+
+            if (!datumPocetka.before(datumKraja)) {
+                JOptionPane.showMessageDialog(this,
+                        ResourceBundle.getBundle("resource.messages").getString("dpdk"));
+                return;
+            }
+
+            TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
+            ArrayList<Tim> ucesnici = tm.getLista();
+
+            ArrayList<Tim> pobednici;
+
+            if (cbZreb.isSelected()) {
+                Collections.shuffle(ucesnici);
+            }
+
+            if (isPowerOfTwo(ucesnici.size())) {
+                opis = "N/A  ";
+            }
+
+            while (!isPowerOfTwo(ucesnici.size())) {
+                ucesnici.add(prazan);
+            }
+
+            int brojKola = (int) Math.ceil(Math.log(ucesnici.size()) / Math.log(2));
+            String kolo;
+
+            for (int runda = 1; runda <= brojKola; runda++) {
+
+                int brojac = 0;
+                pobednici = new ArrayList<>();
+
+                if (runda == brojKola) {
+                    kolo = "Finale";
+                } else {
+                    kolo = Integer.toString(runda);
+                }
+
+                for (int i = 0; i < ucesnici.size() / 2; i++) {
+
+                    Tim tim1 = ucesnici.get(i);
+                    Tim tim2 = ucesnici.get(ucesnici.size() - i - 1);
+                    Utakmica u = new Utakmica(null, ++brojac, kolo, null, null,
+                            tim1, tim2, prazan, null, null);
+
+                    if (tim2.equals(prazan) && runda == 1) {
+                        u.setPobednik(tim1);
+                        opis += u.getPobednik().getNazivTima() + ", ";
+                    }
+
+                    if (runda != 1 && (tim2.equals(prazan) || tim1.equals(prazan))) {
+                        u.setPobednik(prazan);
+                    }
+
+                    pobednici.add(u.getPobednik());
+                    utakmice.add(u);
+
+                }
+
+                ucesnici = new ArrayList<>(pobednici);
+
+            }
+
+            for (int i = 1; i < brojKola - 1; i++) {
+                sortiraj(utakmice, i);
+            }
+
+            if (opis.length() > 2) {
+                opis = opis.substring(0, opis.length() - 2);
+            }
+            Turnir turnir = new Turnir(null, naziv, datumPocetka, datumKraja,
+                    opis, "", grad, ulogovani, utakmice, null);
+
+            ClientController.getInstance().addTurnir(turnir);
+            resetujFormu();
+
+            JOptionPane.showMessageDialog(this,
+                    ResourceBundle.getBundle("resource/messages").getString("kreiran_turnir_msg"));
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ResourceBundle.getBundle("resource.messages").getString(ex.getMessage()));
+            izbaciPrazne();
+        }
+    }
+
+    private void kreirajLigu() {
+        try {
+            TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
+            ArrayList<Tim> timovi = tm.getLista();
+            int brojEkipa = timovi.size();
+            int brojKola = brojEkipa % 2 == 0 ? brojEkipa - 1 : brojEkipa;
+
+            if (brojEkipa % 2 != 0) {
+                timovi.add(prazan);
+                brojEkipa++;
+            }
+            ArrayList<Utakmica> sveUtakmice = new ArrayList<>();
+            ArrayList<Utakmica> utakmiceKola;
+
+            for (int i = 0; i < brojKola; i++) {
+                utakmiceKola = new ArrayList<>();
+                for (int j = 0; j < timovi.size() / 2; j++) {
+                    if (timovi.get(j).equals(prazan) || timovi.get(brojEkipa - 1 - j).equals(prazan)) {
+                        continue;
+                    }
+                    Utakmica u = new Utakmica(null, 0, Integer.toString(i + 1), null, null, timovi.get(j), timovi.get(brojEkipa - 1 - j), prazan, null, null);
+                    if (i % 2 == 0 && j == 0) {
+                        zameniTimove(u);
+                    }
+                    utakmiceKola.add(u);
+                }
+                Collections.shuffle(utakmiceKola);
+                int brojac = 0;
+                for (Utakmica utakmica : utakmiceKola) {
+                    utakmica.setRbUtakmice(++brojac);
+                    sveUtakmice.add(utakmica);
+                }
+                timovi.add(1, timovi.remove(brojEkipa - 1));
+            }
+
+            timovi.remove(prazan);
+
+            if (cbZreb.isSelected()) {
+                int brojUtakmica = sveUtakmice.size();
+                for (int i = 0; i < brojUtakmica; i++) {
+                    Utakmica u = new Utakmica(sveUtakmice.get(i));
+                    zameniTimove(u);
+                    u.setKolo(Integer.toString(brojKola + Integer.parseInt(u.getKolo())));
+                    sveUtakmice.add(u);
+                }
+            }
+
+            String opis = "";
+
+            String naziv = txtNaziv.getText();
+            Grad grad = (Grad) cmbGrad.getSelectedItem();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            Date datumPocetka = sdf.parse(txtDatumPocetka.getText());
+            Date datumKraja = sdf.parse(txtDatumKraja.getText());
+
+            ArrayList<Tabela> tabele = new ArrayList<>();
+
+            for (Tim t : timovi) {
+                Tabela tabela = new Tabela(null, t, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                tabele.add(tabela);
+            }
+
+            Turnir t = new Turnir(null, naziv, datumPocetka, datumKraja, opis, "", grad, ulogovani, sveUtakmice, tabele);
+
+            ClientController.getInstance().addTurnir(t);
+            resetujFormu();
+
+            JOptionPane.showMessageDialog(this,
+                    ResourceBundle.getBundle("resource/messages").getString("kreiran_turnir_msg"));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ResourceBundle.getBundle("resource.messages").getString(ex.getMessage()));
+        }
+    }
 
     private void popuniGradove() {
         try {
@@ -746,7 +847,6 @@ public class MainForm extends javax.swing.JFrame {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     private void resetujFormu() {
         popuniTimove();
@@ -761,39 +861,41 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void sortiraj(ArrayList<Utakmica> utakmice, int KOLO) {
-        
+
         String kolo = Integer.toString(KOLO);
         ArrayList<Utakmica> utakmiceSort = new ArrayList<>();
         for (Utakmica utakmica : utakmice) {
-            if (utakmica.getKolo().equals(kolo)) utakmiceSort.add(utakmica);
+            if (utakmica.getKolo().equals(kolo)) {
+                utakmiceSort.add(utakmica);
+            }
         }
-        
+
         int inkrement = 1;
-        
+
         int brojKola = (int) Math.ceil(Math.log(utakmiceSort.size()) / Math.log(2));
         int brojKolaPom = brojKola;
-        
-        int max = utakmiceSort.size()-1;
+
+        int max = utakmiceSort.size() - 1;
         for (int i = 1; i < brojKola; i++) {
             ArrayList<Utakmica> pomocna = new ArrayList<>();
-            
-            for (int j = 0; j < Math.pow(2, brojKolaPom-1); j+=inkrement) {
-                
-                for (int k = 1; k <= Math.pow(2, i-1); k++) {
-                    pomocna.add(utakmiceSort.get(j+k-1));
+
+            for (int j = 0; j < Math.pow(2, brojKolaPom - 1); j += inkrement) {
+
+                for (int k = 1; k <= Math.pow(2, i - 1); k++) {
+                    pomocna.add(utakmiceSort.get(j + k - 1));
                 }
-                
-                for (int k = (int) Math.pow(2, i-1); k >= 1; k--) {
-                    pomocna.add(utakmiceSort.get(max-j-k+1));
+
+                for (int k = (int) Math.pow(2, i - 1); k >= 1; k--) {
+                    pomocna.add(utakmiceSort.get(max - j - k + 1));
                 }
-                
+
             }
-            
-            inkrement*=2;
-            
+
+            inkrement *= 2;
+
             utakmiceSort = new ArrayList<>(pomocna);
         }
-        
+
         int brojac = 0;
         for (Utakmica utak : utakmiceSort) {
             utak.setRbUtakmice(++brojac);
@@ -802,51 +904,58 @@ public class MainForm extends javax.swing.JFrame {
 
     private void namestiJezik() {
         ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
-        
+
         setTitle(bundle.getString("main_forma"));
         lblUlogovani.setText(bundle.getString("ulogovani") + ulogovani);
-        
+
         mOdjava.setText(bundle.getString("odjava"));
         mTim.setText(bundle.getString("tim"));
         mTurnir.setText(bundle.getString("turnir"));
         mVaterpolista.setText(bundle.getString("vaterpolista"));
-        
+
         miNoviTim.setText(bundle.getString("novi_tim"));
         miNoviVaterpolista.setText(bundle.getString("novi_vtp"));
         miOdjava.setText(bundle.getString("odjava"));
         miPretragaTimova.setText(bundle.getString("pretraga_timova"));
         miPretragaTurnira.setText(bundle.getString("pretraga_turnir"));
         miPretragaVaterpoliste.setText(bundle.getString("pretraga_vtp"));
-        
+
         pnlTurnir.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("unos_turnir")));
         pnlUcesnik.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("unos_ucesnik")));
-        
+
         lblDK.setText(bundle.getString("datum_kraja"));
         lblDP.setText(bundle.getString("datum_pocetka"));
         lblGrad.setText(bundle.getString("grad"));
         lblNaziv.setText(bundle.getString("naziv"));
         lblTimovi.setText(bundle.getString("timovi"));
-        
+        lblTip.setText(bundle.getString("tip_turnira"));
+
         cbZreb.setText(bundle.getString("generisi"));
-        
+
         btnDodaj.setText(bundle.getString("dodaj_tim"));
         btnObrisi.setText(bundle.getString("obrisi_tim"));
         btnEvidentiraj.setText(bundle.getString("evidentiraj_turnir"));
-        
+
         String[] kolone = {"ID:", bundle.getString("naziv"), bundle.getString("grad")};
-        
+
         TableModelUcesnici tm = new TableModelUcesnici();
         tm.setKolone(kolone);
         tblTimovi.setModel(tm);
-        
+
     }
 
     private void izbaciPrazne() {
         TableModelUcesnici tm = (TableModelUcesnici) tblTimovi.getModel();
-        ArrayList<Tim> ucesnici = new ArrayList<>(tm.getLista());
-        for (Tim tim : ucesnici) {
-            if (tim.getTimID()==0) tm.getLista().remove(tim);
+        ArrayList<Tim> ucesnici = tm.getLista();
+        while (ucesnici.remove(prazan)) {
         }
         tm.fireTableDataChanged();
     }
+
+    private void zameniTimove(Utakmica u) {
+        Tim t = u.getPrviTim();
+        u.setPrviTim(u.getDrugiTim());
+        u.setDrugiTim(t);
+    }
+
 }

@@ -35,4 +35,6 @@ public interface Operation {
 
     public static final int GET_ALL_GRAD = 16;
     
+    public static final int GET_ALL_TABELA = 17;
+    
 }

@@ -8,6 +8,7 @@ import domain.Administrator;
 import domain.Grad;
 import domain.Igrac;
 import domain.StavkaIzvestaja;
+import domain.Tabela;
 import domain.Tim;
 import domain.Turnir;
 import domain.Utakmica;
@@ -47,11 +48,11 @@ public class ClientController {
     public void addVaterpolista(Vaterpolista vaterpolista) throws Exception {
         sendRequest(Operation.ADD_VATERPOLISTA, vaterpolista);
     }
-    
+
     public void addTurnir(Turnir turnir) throws Exception {
         sendRequest(Operation.ADD_TURNIR, turnir);
     }
-    
+
     public void addTim(Tim tim) throws Exception {
         sendRequest(Operation.ADD_TIM, tim);
     }
@@ -63,19 +64,19 @@ public class ClientController {
     public void deleteVaterpolista(Vaterpolista vaterpolista) throws Exception {
         sendRequest(Operation.DELETE_VATERPOLISTA, vaterpolista);
     }
-    
+
     public void deleteTim(Tim tim) throws Exception {
         sendRequest(Operation.DELETE_TIM, tim);
     }
-    
+
     public void updateVaterpolista(Vaterpolista vaterpolista) throws Exception {
         sendRequest(Operation.UPDATE_VATERPOLISTA, vaterpolista);
     }
-    
+
     public void updateTurnir(Turnir turnir) throws Exception {
         sendRequest(Operation.UPDATE_TURNIR, turnir);
     }
-    
+
     public void updateTim(Tim tim) throws Exception {
         sendRequest(Operation.UPDATE_TIM, tim);
     }
@@ -87,7 +88,7 @@ public class ClientController {
     public ArrayList<Turnir> getAllTurnir() throws Exception {
         return (ArrayList<Turnir>) sendRequest(Operation.GET_ALL_TURNIR, null);
     }
-    
+
     public ArrayList<Turnir> getAllTurnir(String parametar) throws Exception {
         return (ArrayList<Turnir>) sendRequest(Operation.GET_ALL_TURNIR, parametar);
     }
@@ -95,7 +96,7 @@ public class ClientController {
     public ArrayList<Vaterpolista> getAllVaterpolista() throws Exception {
         return (ArrayList<Vaterpolista>) sendRequest(Operation.GET_ALL_VATERPOLISTA, null);
     }
-    
+
     public ArrayList<Tim> getAllTim() throws Exception {
         return (ArrayList<Tim>) sendRequest(Operation.GET_ALL_TIM, null);
     }
@@ -103,7 +104,7 @@ public class ClientController {
     public ArrayList<Igrac> getAllIgrac() throws Exception {
         return (ArrayList<Igrac>) sendRequest(Operation.GET_ALL_IGRAC, null);
     }
-    
+
     public ArrayList<Igrac> getAllIgrac(Tim t) throws Exception {
         return (ArrayList<Igrac>) sendRequest(Operation.GET_ALL_IGRAC, t);
     }
@@ -114,6 +115,10 @@ public class ClientController {
 
     public ArrayList<Utakmica> getAllUtakmica(Turnir t) throws Exception {
         return (ArrayList<Utakmica>) sendRequest(Operation.GET_ALL_UTAKMICA, t);
+    }
+
+    public ArrayList<Tabela> getAllTabela(Turnir t) throws Exception {
+        return (ArrayList<Tabela>) sendRequest(Operation.GET_ALL_TABELA, t);
     }
 
     private Object sendRequest(int operation, Object data) throws Exception {
@@ -132,5 +137,5 @@ public class ClientController {
         }
 
     }
-    
+
 }
