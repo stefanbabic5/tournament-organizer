@@ -204,7 +204,7 @@ public class Tabela extends AbstractDomainObject {
                     rs.getString("Username"), rs.getString("Password"));
 
             Turnir turnir = new Turnir(rs.getLong("turnirID"), rs.getString("nazivTurnira"),
-                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("slobodanProlaz"),
+                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("tipTurnira"),
                     rs.getString("pobednik"), g, a, null, null);
             
             Tabela st = new Tabela(turnir, t, rs.getInt("homeWins"), rs.getInt("homeWinsPenalty"),
@@ -269,6 +269,6 @@ public class Tabela extends AbstractDomainObject {
 
     @Override
     public String uslov() {
-        return "where st.turnirid = " + turnir.getTurnirID() + " order by points ";
+        return "where st.turnirid = " + turnir.getTurnirID() + " order by points desc, (scoredHome + scoredAway - allowedHome - allowedAway) DESC ";
     }
 }

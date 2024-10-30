@@ -138,4 +138,8 @@ public class ClientController {
 
     }
 
+    public int getBrojKola(Turnir t) throws Exception {
+        return (int) sendRequest(Operation.GET_BROJ_KOLA, t);
+    }
+
 }

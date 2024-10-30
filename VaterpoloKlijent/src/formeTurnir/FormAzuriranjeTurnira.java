@@ -45,7 +45,7 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
         txtDatumPocetka.setText(sdf.format(t.getDatumPocetka()));
         txtDatumKraja.setText(sdf.format(t.getDatumKraja()));
         txtNaziv.setText(t.getNazivTurnira());
-        lblOpisTxt.setText(t.getOpis());
+        lblOpisTxt.setText(t.getTip());
         cmbGrad.getModel().setSelectedItem(t.getGrad());
         cmbGrad.setEnabled(false);
         this.jezik = jezik;
@@ -78,7 +78,6 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
         btnObrisi = new javax.swing.JButton();
         btnIzmeni = new javax.swing.JButton();
         lblOpisTxt = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -172,13 +171,6 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
 
         lblOpisTxt.setText("jLabel10");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlTurnirLayout = new javax.swing.GroupLayout(pnlTurnir);
         pnlTurnir.setLayout(pnlTurnirLayout);
         pnlTurnirLayout.setHorizontalGroup(
@@ -215,10 +207,6 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
                         .addComponent(btnZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)))
                 .addGap(6, 6, 6))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTurnirLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(379, 379, 379))
         );
         pnlTurnirLayout.setVerticalGroup(
             pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,9 +239,7 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
                     .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnIzmeni)
                         .addComponent(btnObrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -368,10 +354,6 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnAzurirajUtakmicuActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new FormStandings(this, true, t).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -383,7 +365,6 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
     private javax.swing.JButton btnObrisi;
     private javax.swing.JButton btnZatvori;
     private javax.swing.JComboBox cmbGrad;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDK;
     private javax.swing.JLabel lblDP;

@@ -125,8 +125,14 @@ public class FormIzmenaUtakmice extends javax.swing.JDialog {
         u.setBrojGolovaPrviTim(goloviPrvi);
         u.setBrojGolovaDrugiTim(goloviDrugi);
         
-        FormAzuriranjeTurnira fa = (FormAzuriranjeTurnira) getParent();
-        fa.izmeniUtakmicu(u);
+        if (u.getTip().equals("Liga")) {
+            FormAzuriranjeLige fa = (FormAzuriranjeLige) getParent();
+            fa.izmeniUtakmicu(u);
+        }
+        else {
+            FormAzuriranjeTurnira fa = (FormAzuriranjeTurnira) getParent();
+            fa.izmeniUtakmicu(u);
+        }
         this.dispose();
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
@@ -151,4 +157,5 @@ public class FormIzmenaUtakmice extends javax.swing.JDialog {
         
         btnIzmeni.setText(bundle.getString("izmena_utk"));
     }
+    
 }

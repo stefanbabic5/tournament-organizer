@@ -21,7 +21,7 @@ import modeli.TableModelTurniri;
 public class FormPretragaTurnira extends javax.swing.JDialog {
 
     Locale jezik;
-    
+
     public FormPretragaTurnira(java.awt.Frame parent, boolean modal, Locale jezik) {
         super(parent, modal);
         initComponents();
@@ -205,41 +205,62 @@ public class FormPretragaTurnira extends javax.swing.JDialog {
     }//GEN-LAST:event_txtPretragaKeyReleased
 
     private void btnDetaljiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetaljiActionPerformed
-        
+
         int row = tblEvidentirani.getSelectedRow();
-        
+
         if (row >= 0) {
             try {
                 Turnir t = ((TableModelTurniri) tblEvidentirani.getModel()).getSelectedTurnir(row);
+
+                String tip = t.getTip();
+                switch (tip) {
+                    case "Kup":
+                        new FormDetaljiTurnira(this, rootPaneCheckingEnabled, t, jezik).setVisible(true);
+                        break;
+                    case "Liga":
+                        new FormDetaljiLige(this, rootPaneCheckingEnabled, t, jezik).setVisible(true);
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
                 
-                new FormDetaljiTurnira(this, rootPaneCheckingEnabled, t, jezik).setVisible(true);
+                
             } catch (Exception ex) {
                 Logger.getLogger(FormPretragaTurnira.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }//GEN-LAST:event_btnDetaljiActionPerformed
 
     private void btnAzurirajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAzurirajActionPerformed
-        
+
         int row = tblNeevidentirani.getSelectedRow();
-        
+
         if (row >= 0) {
             Turnir t = ((TableModelTurniri) tblNeevidentirani.getModel()).getSelectedTurnir(row);
             try {
-                new FormAzuriranjeTurnira(this, true, t, jezik).setVisible(true);
+                switch (t.getTip()) {
+                    case "Kup":
+                        new FormAzuriranjeTurnira(this, true, t, jezik).setVisible(true);
+                        break;
+                    case "Liga":
+                        new FormAzuriranjeLige(this, true, t, jezik).setVisible(true);
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
             } catch (Exception ex) {
                 Logger.getLogger(FormPretragaTurnira.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }//GEN-LAST:event_btnAzurirajActionPerformed
 
     private void btnPretragaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPretragaActionPerformed
         try {
             String parametar = txtPretraga.getText();
             ArrayList<Turnir> turniri = ClientController.getInstance().getAllTurnir(parametar);
-            
+
             if (!turniri.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         ResourceBundle.getBundle("resource/messages").getString("nasao"));
@@ -247,15 +268,18 @@ public class FormPretragaTurnira extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this,
                         ResourceBundle.getBundle("resource/messages").getString("nije_nasao"));
             }
-            
+
             TableModelTurniri tm1 = (TableModelTurniri) tblEvidentirani.getModel();
             tm1.clear();
             TableModelTurniri tm2 = (TableModelTurniri) tblNeevidentirani.getModel();
             tm2.clear();
-            
+
             for (Turnir t : turniri) {
-                if (t.getPobednik().equals("")) tm2.dodaj(t);
-                else tm1.dodaj(t);
+                if (t.getPobednik().equals("")) {
+                    tm2.dodaj(t);
+                } else {
+                    tm1.dodaj(t);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(FormPretragaTurnira.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,7 +300,6 @@ public class FormPretragaTurnira extends javax.swing.JDialog {
     private javax.swing.JTextField txtPretraga;
     // End of variables declaration//GEN-END:variables
 
-
     final void popuniTabele() {
         try {
             ArrayList<Turnir> turniri = ClientController.getInstance().getAllTurnir();
@@ -284,54 +307,59 @@ public class FormPretragaTurnira extends javax.swing.JDialog {
             tm1.clear();
             TableModelTurniri tm2 = (TableModelTurniri) tblNeevidentirani.getModel();
             tm2.clear();
-            
+
             for (Turnir t : turniri) {
-                if (t.getPobednik().equals("")) tm2.dodaj(t);
-                else tm1.dodaj(t);
+                if (t.getPobednik().equals("")) {
+                    tm2.dodaj(t);
+                } else {
+                    tm1.dodaj(t);
+                }
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(FormPretragaTurnira.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
 
     private void namestiJezik() {
         ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
-        
+
         setTitle(bundle.getString("pretraga_turnir"));
-        
+
         lblPretraga.setText(bundle.getString("search_turnir"));
-        
+
         pnlEvidentirani.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("gotovi")));
         pnlNeevidentirani.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("u_toku")));
-        
+
         btnAzuriraj.setText(bundle.getString("azuriraj_turnir"));
         btnDetalji.setText(bundle.getString("detalji_turnir"));
         btnPretraga.setText(bundle.getString("pretrazi"));
-        
+
         String[] kolone = {"ID:", bundle.getString("naziv"), bundle.getString("grad"),
             bundle.getString("datum_pocetka"), bundle.getString("datum_kraja"), bundle.getString("pobednik_turnir")};
-        
+
         try {
             ArrayList<Turnir> turniri = ClientController.getInstance().getAllTurnir();
             TableModelTurniri tm1 = new TableModelTurniri();
             tm1.setKolone(kolone);
             tblEvidentirani.setModel(tm1);
-            
+
             TableModelTurniri tm2 = new TableModelTurniri();
             tm2.setKolone(kolone);
             tblNeevidentirani.setModel(tm2);
-            
+
             for (Turnir t : turniri) {
-                if (t.getPobednik().equals("")) tm2.dodaj(t);
-                else tm1.dodaj(t);
+                if (t.getPobednik().equals("")) {
+                    tm2.dodaj(t);
+                } else {
+                    tm1.dodaj(t);
+                }
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(FormPretragaTurnira.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 }

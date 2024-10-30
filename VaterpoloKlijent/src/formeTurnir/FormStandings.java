@@ -22,6 +22,7 @@ public class FormStandings extends javax.swing.JDialog {
     public FormStandings(JDialog parent, boolean modal, Turnir t) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
         this.t = t;
         jLabel1.setText(this.t.getNazivTurnira());
         TableModelStandings tm = new TableModelStandings(t);

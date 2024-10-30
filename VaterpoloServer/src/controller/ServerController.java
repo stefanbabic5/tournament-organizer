@@ -25,6 +25,7 @@ import so.tim.SOUpdateTim;
 import so.turnir.SOAddTurnir;
 import so.turnir.SODeleteTurnir;
 import so.turnir.SOGetAllTurnir;
+import so.turnir.SOGetBrojKola;
 import so.turnir.SOUpdateTurnir;
 import so.utakmica.SOGetAllUtakmica;
 import so.vaterpolista.SOAddVaterpolista;
@@ -153,6 +154,7 @@ public class ServerController {
         
         Utakmica u = new Utakmica();
         u.setTurnir(t);
+        u.setKolo(Integer.toString(t.getKoloHelper()));
         
         so.templateExecute(u);
         return so.getLista();
@@ -166,6 +168,12 @@ public class ServerController {
         
         so.templateExecute(st);
         return so.getLista();
+    }
+
+    public int getBrojKola(Turnir turnir) throws Exception {
+        SOGetBrojKola so = new SOGetBrojKola();
+        so.templateExecute(turnir);
+        return so.getBroj();
     }
 
 }

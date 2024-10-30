@@ -92,6 +92,7 @@ public class TableModelUtakmice extends AbstractTableModel {
 
     public void setLista(ArrayList<Utakmica> lista) {
         this.lista = lista;
+        fireTableDataChanged();
     }
 
     public void setKolone(String[] kolone) {

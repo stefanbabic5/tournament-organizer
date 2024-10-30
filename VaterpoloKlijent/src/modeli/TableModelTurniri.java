@@ -53,7 +53,7 @@ public class TableModelTurniri extends AbstractTableModel {
             case 1:
                 return t.getNazivTurnira();
             case 2:
-                return t.getGrad();
+                return t.getTip();
             case 3:
                 return sdf.format(t.getDatumPocetka());
             case 4:

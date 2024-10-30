@@ -648,7 +648,7 @@ public class MainForm extends javax.swing.JFrame {
                 return;
             }
 
-            String opis = "";
+            String tip = (String) cmbTip.getSelectedItem();
             ArrayList<Utakmica> utakmice = new ArrayList<>();
 
             String naziv = txtNaziv.getText();
@@ -671,10 +671,6 @@ public class MainForm extends javax.swing.JFrame {
 
             if (cbZreb.isSelected()) {
                 Collections.shuffle(ucesnici);
-            }
-
-            if (isPowerOfTwo(ucesnici.size())) {
-                opis = "N/A  ";
             }
 
             while (!isPowerOfTwo(ucesnici.size())) {
@@ -704,7 +700,6 @@ public class MainForm extends javax.swing.JFrame {
 
                     if (tim2.equals(prazan) && runda == 1) {
                         u.setPobednik(tim1);
-                        opis += u.getPobednik().getNazivTima() + ", ";
                     }
 
                     if (runda != 1 && (tim2.equals(prazan) || tim1.equals(prazan))) {
@@ -724,11 +719,8 @@ public class MainForm extends javax.swing.JFrame {
                 sortiraj(utakmice, i);
             }
 
-            if (opis.length() > 2) {
-                opis = opis.substring(0, opis.length() - 2);
-            }
             Turnir turnir = new Turnir(null, naziv, datumPocetka, datumKraja,
-                    opis, "", grad, ulogovani, utakmice, null);
+                    tip, "", grad, ulogovani, utakmice, null);
 
             ClientController.getInstance().addTurnir(turnir);
             resetujFormu();
@@ -789,7 +781,7 @@ public class MainForm extends javax.swing.JFrame {
                 }
             }
 
-            String opis = "";
+            String tip = (String) cmbTip.getSelectedItem();
 
             String naziv = txtNaziv.getText();
             Grad grad = (Grad) cmbGrad.getSelectedItem();
@@ -805,7 +797,7 @@ public class MainForm extends javax.swing.JFrame {
                 tabele.add(tabela);
             }
 
-            Turnir t = new Turnir(null, naziv, datumPocetka, datumKraja, opis, "", grad, ulogovani, sveUtakmice, tabele);
+            Turnir t = new Turnir(null, naziv, datumPocetka, datumKraja, tip, "", grad, ulogovani, sveUtakmice, tabele);
 
             ClientController.getInstance().addTurnir(t);
             resetujFormu();

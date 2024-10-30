@@ -24,6 +24,17 @@ public class Utakmica extends AbstractDomainObject {
     private Tim pobednik;
     private Integer penaliPrvi;
     private Integer penaliDrugi;
+    
+    private String tip;
+
+    public String getTip() {
+        return tip;
+    }
+
+    public void setTip(String tip) {
+        this.tip = tip;
+    }
+    
 
     public Utakmica() {
     }
@@ -89,7 +100,7 @@ public class Utakmica extends AbstractDomainObject {
             Grad g = new Grad(rs.getLong("GradID"), rs.getString("NazivGrada"));
 
             Turnir t = new Turnir(rs.getLong("turnirID"), rs.getString("nazivTurnira"),
-                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("slobodanProlaz"),
+                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("tipTurnira"),
                     rs.getString("pobednik"), g, a, null, null);
 
             Grad prviGrad = new Grad(rs.getLong("prviGrad.GradID"),
@@ -147,7 +158,11 @@ public class Utakmica extends AbstractDomainObject {
 
     @Override
     public String uslov() {
-        return " WHERE T.TURNIRID = " + turnir.getTurnirID() + " ORDER BY u.turnirid, u.kolo, u.rbutakmice";
+        if (turnir.getTip().equals("Kup")) {
+            return " WHERE T.TURNIRID = " + turnir.getTurnirID() + " ORDER BY u.turnirid, u.kolo, u.rbutakmice";
+        } else {
+            return " WHERE T.TURNIRID = " + turnir.getTurnirID() + " AND U.KOLO = " + kolo + " ORDER BY u.turnirid, u.kolo, u.rbutakmice";
+        }
     }
 
     public String getKolo() {

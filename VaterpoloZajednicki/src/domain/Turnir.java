@@ -19,19 +19,29 @@ public class Turnir extends AbstractDomainObject {
     private String nazivTurnira;
     private Date datumPocetka;
     private Date datumKraja;
-    private String opis;
+    private String tip;
     private String pobednik;
     private Grad grad;
     private Administrator administrator;
     private ArrayList<Utakmica> utakmice;
     private ArrayList<Tabela> tabela;
+    
+    private int koloHelper;
 
-    public Turnir(Long turnirID, String nazivTurnira, Date datumPocetka, Date datumKraja, String opis, String pobednik, Grad grad, Administrator administrator, ArrayList<Utakmica> utakmice, ArrayList<Tabela> tabela) {
+    public void setKoloHelper(int koloHelper) {
+        this.koloHelper = koloHelper;
+    }
+
+    public int getKoloHelper() {
+        return koloHelper;
+    }
+
+    public Turnir(Long turnirID, String nazivTurnira, Date datumPocetka, Date datumKraja, String tip, String pobednik, Grad grad, Administrator administrator, ArrayList<Utakmica> utakmice, ArrayList<Tabela> tabela) {
         this.turnirID = turnirID;
         this.nazivTurnira = nazivTurnira;
         this.datumPocetka = datumPocetka;
         this.datumKraja = datumKraja;
-        this.opis = opis;
+        this.tip = tip;
         this.pobednik = pobednik;
         this.grad = grad;
         this.administrator = administrator;
@@ -70,7 +80,7 @@ public class Turnir extends AbstractDomainObject {
             Grad g = new Grad(rs.getLong("GradID"), rs.getString("NazivGrada"));
 
             Turnir t = new Turnir(rs.getLong("turnirID"), rs.getString("nazivTurnira"),
-                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("slobodanProlaz"),
+                    rs.getDate("datumPocetka"), rs.getDate("datumKraja"), rs.getString("tipTurnira"),
                     rs.getString("pobednik"),g, a, null, null);
 
             lista.add(t);
@@ -82,7 +92,7 @@ public class Turnir extends AbstractDomainObject {
 
     @Override
     public String koloneZaInsert() {
-        return " (nazivTurnira, datumPocetka, datumKraja, slobodanProlaz, gradID, AdministratorID, pobednik) ";
+        return " (nazivTurnira, datumPocetka, datumKraja, tipTurnira, gradID, AdministratorID, pobednik) ";
     }
 
     @Override
@@ -93,7 +103,7 @@ public class Turnir extends AbstractDomainObject {
     @Override
     public String vrednostiZaInsert() {
         return "'" + nazivTurnira + "', '" + new java.sql.Date(datumPocetka.getTime()) + "', "
-                + "'" + new java.sql.Date(datumKraja.getTime()) + "', '" + opis + "', "
+                + "'" + new java.sql.Date(datumKraja.getTime()) + "', '" + tip + "', "
                 + "" + grad.getGradID() + ", " + administrator.getAdministratorID() + ", '" + pobednik + "'";
     }
 
@@ -102,7 +112,7 @@ public class Turnir extends AbstractDomainObject {
         return " nazivTurnira = '" + nazivTurnira + "', "
                 + "datumPocetka = '" + new java.sql.Date(datumPocetka.getTime()) + "', "
                 + "datumKraja = '" + new java.sql.Date(datumKraja.getTime()) + "', "
-                + "slobodanProlaz = '" + opis + "', " + "Pobednik = '" + pobednik + "'";
+                + "tipTurnira = '" + tip + "', " + "Pobednik = '" + pobednik + "'";
     }
 
     @Override
@@ -143,12 +153,12 @@ public class Turnir extends AbstractDomainObject {
         this.datumKraja = datumKraja;
     }
 
-    public String getOpis() {
-        return opis;
+    public String getTip() {
+        return tip;
     }
 
-    public void setOpis(String opis) {
-        this.opis = opis;
+    public void setTip(String tip) {
+        this.tip = tip;
     }
 
     public Grad getGrad() {

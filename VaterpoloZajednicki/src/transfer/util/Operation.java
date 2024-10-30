@@ -37,4 +37,6 @@ public interface Operation {
     
     public static final int GET_ALL_TABELA = 17;
     
+    public static final int GET_BROJ_KOLA = 18;
+    
 }

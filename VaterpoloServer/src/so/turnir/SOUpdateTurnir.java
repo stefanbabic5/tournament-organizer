@@ -6,6 +6,7 @@ package so.turnir;
 
 import db.DBBroker;
 import domain.AbstractDomainObject;
+import domain.Tabela;
 import domain.Turnir;
 import domain.Utakmica;
 import java.util.ArrayList;
@@ -47,6 +48,10 @@ public class SOUpdateTurnir extends AbstractSO {
 
         for (Utakmica utakmica : t.getUtakmice()) {
             DBBroker.getInstance().update(utakmica);
+        }
+        
+        for (Tabela st : t.getTabela()) {
+            DBBroker.getInstance().update(st);
         }
 
     }

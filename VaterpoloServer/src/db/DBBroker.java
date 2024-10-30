@@ -5,6 +5,7 @@
 package db;
 
 import domain.AbstractDomainObject;
+import domain.Turnir;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -81,5 +82,26 @@ public class DBBroker {
         Statement s = connection.createStatement();
         s.executeUpdate(upit);
     }
-    
+
+    public int getBrojKola(Turnir t) throws SQLException {
+        String upit = "SELECT kolo FROM utakmica WHERE pobednikID = 0 and turnirID = " + t.getTurnirID() + " order by kolo limit 1";
+        System.out.println("Upit: " + upit);
+        Statement s = connection.createStatement();
+        ResultSet rs = s.executeQuery(upit);
+
+        if (rs.next()) {
+            return Integer.parseInt(rs.getString("kolo"));
+        } else {
+            upit = "SELECT MAX(CAST(kolo AS UNSIGNED)) AS kolo FROM utakmica WHERE turnirID = " + t.getTurnirID();
+            System.out.println("Upit za poslednje kolo: " + upit);
+
+            rs = s.executeQuery(upit);
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("kolo"));
+            } else {
+                return -1;
+            }
+        }
+
+    }
 }
