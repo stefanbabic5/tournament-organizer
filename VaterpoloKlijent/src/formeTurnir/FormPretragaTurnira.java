@@ -336,7 +336,7 @@ public class FormPretragaTurnira extends javax.swing.JDialog {
         btnDetalji.setText(bundle.getString("detalji_turnir"));
         btnPretraga.setText(bundle.getString("pretrazi"));
 
-        String[] kolone = {"ID:", bundle.getString("naziv"), bundle.getString("grad"),
+        String[] kolone = {"ID:", bundle.getString("naziv"), bundle.getString("tip_turnira"),
             bundle.getString("datum_pocetka"), bundle.getString("datum_kraja"), bundle.getString("pobednik_turnir")};
 
         try {

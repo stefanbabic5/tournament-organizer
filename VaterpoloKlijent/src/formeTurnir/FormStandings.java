@@ -5,6 +5,8 @@
 package formeTurnir;
 
 import domain.Turnir;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JDialog;
 import modeli.TableModelStandings;
 
@@ -15,18 +17,20 @@ import modeli.TableModelStandings;
 public class FormStandings extends javax.swing.JDialog {
 
     Turnir t;
-
+    TableModelStandings tm;
+    Locale jezik;
     /**
      * Creates new form FormStandings
      */
-    public FormStandings(JDialog parent, boolean modal, Turnir t) {
+    public FormStandings(JDialog parent, boolean modal, Turnir t, Locale jezik) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
         this.t = t;
-        jLabel1.setText(this.t.getNazivTurnira());
-        TableModelStandings tm = new TableModelStandings(t);
-        jTable1.setModel(tm);
+        lblNazivTurnira.setText(this.t.getNazivTurnira());
+        rbTotal.setSelected(true);
+        this.jezik=jezik;
+        namestiJezik();
     }
 
     /**
@@ -38,16 +42,20 @@ public class FormStandings extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblNazivTurnira = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblStandings = new javax.swing.JTable();
+        rbTotal = new javax.swing.JRadioButton();
+        rbHome = new javax.swing.JRadioButton();
+        rbAway = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("jLabel1");
+        lblNazivTurnira.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblNazivTurnira.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNazivTurnira.setText("jLabel1");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStandings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -58,7 +66,28 @@ public class FormStandings extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblStandings);
+
+        rbTotal.setText("Total");
+        rbTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTotalActionPerformed(evt);
+            }
+        });
+
+        rbHome.setText("Home");
+        rbHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbHomeActionPerformed(evt);
+            }
+        });
+
+        rbAway.setText("Away");
+        rbAway.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbAwayActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,25 +96,63 @@ public class FormStandings extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNazivTurnira, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(rbTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbHome)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbAway)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNazivTurnira)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbTotal)
+                    .addComponent(rbHome)
+                    .addComponent(rbAway))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rbTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTotalActionPerformed
+        rbTotal.setSelected(true);
+        rbHome.setSelected(false);
+        rbAway.setSelected(false);
+        
+        tm.setTotalHomeAway(0);
+    }//GEN-LAST:event_rbTotalActionPerformed
+
+    private void rbHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbHomeActionPerformed
+        rbTotal.setSelected(false);
+        rbHome.setSelected(true);
+        rbAway.setSelected(false);
+        
+        tm.setTotalHomeAway(1);
+    }//GEN-LAST:event_rbHomeActionPerformed
+
+    private void rbAwayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAwayActionPerformed
+        rbTotal.setSelected(false);
+        rbHome.setSelected(false);
+        rbAway.setSelected(true);
+        
+        tm.setTotalHomeAway(2);
+    }//GEN-LAST:event_rbAwayActionPerformed
 
     /**
      * @param args the command line arguments
@@ -93,8 +160,28 @@ public class FormStandings extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblNazivTurnira;
+    private javax.swing.JRadioButton rbAway;
+    private javax.swing.JRadioButton rbHome;
+    private javax.swing.JRadioButton rbTotal;
+    private javax.swing.JTable tblStandings;
     // End of variables declaration//GEN-END:variables
+    
+    private void namestiJezik() {
+        ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
+        
+        setTitle(bundle.getString("tabela"));
+        
+        rbTotal.setText(bundle.getString("rb_total"));
+        rbHome.setText(bundle.getString("rb_home"));
+        rbAway.setText(bundle.getString("rb_away"));
+        
+        String[] kolone = {bundle.getString("tim"), bundle.getString("pobede"), bundle.getString("pobede_p"),
+            bundle.getString("porazi_p"), bundle.getString("porazi"), bundle.getString("gol_razlika"), bundle.getString("poeni")};
+        tm = new TableModelStandings(t);
+        tm.setKolone(kolone);
+        tblStandings.setModel(tm);
+        
+    }
 }

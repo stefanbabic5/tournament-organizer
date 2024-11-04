@@ -28,12 +28,13 @@ public class Tabela extends AbstractDomainObject {
     private int allowedHome;
     private int scoredAway;
     private int allowedAway;
-    private int points;
+    private int pointsHome;
+    private int pointsAway;
 
     public Tabela() {
     }
 
-    public Tabela(Turnir turnir, Tim tim, int homeWins, int homeWinsPenalty, int homeLossesPenalty, int homeLosses, int awayWins, int awayWinsPenalty, int awayLossesPenalty, int awayLosses, int scoredHome, int allowedHome, int scoredAway, int allowedAway, int points) {
+    public Tabela(Turnir turnir, Tim tim, int homeWins, int homeWinsPenalty, int homeLossesPenalty, int homeLosses, int awayWins, int awayWinsPenalty, int awayLossesPenalty, int awayLosses, int scoredHome, int allowedHome, int scoredAway, int allowedAway, int pointsHome, int pointsAway) {
         this.turnir = turnir;
         this.tim = tim;
         this.homeWins = homeWins;
@@ -48,15 +49,24 @@ public class Tabela extends AbstractDomainObject {
         this.allowedHome = allowedHome;
         this.scoredAway = scoredAway;
         this.allowedAway = allowedAway;
-        this.points = points;
+        this.pointsHome = pointsHome;
+        this.pointsAway = pointsAway;
     }
 
-    public int getPoints() {
-        return points;
+    public int getPointsHome() {
+        return pointsHome;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setPointsHome(int pointsHome) {
+        this.pointsHome = pointsHome;
+    }
+
+    public int getPointsAway() {
+        return pointsAway;
+    }
+
+    public void setPointsAway(int pointsAway) {
+        this.pointsAway = pointsAway;
     }
 
     public Turnir getTurnir() {
@@ -210,7 +220,7 @@ public class Tabela extends AbstractDomainObject {
             Tabela st = new Tabela(turnir, t, rs.getInt("homeWins"), rs.getInt("homeWinsPenalty"),
                     rs.getInt("homeLossesPenalty"), rs.getInt("homeLosses"), rs.getInt("awayWins"), 
                     rs.getInt("awayWinsPenalty"), rs.getInt("awayLossesPenalty"), rs.getInt("awayLosses"), 
-                    rs.getInt("scoredHome"), rs.getInt("allowedHome"), rs.getInt("scoredAway"), rs.getInt("allowedAway"), rs.getInt("points"));
+                    rs.getInt("scoredHome"), rs.getInt("allowedHome"), rs.getInt("scoredAway"), rs.getInt("allowedAway"), rs.getInt("pointsHome"), rs.getInt("pointsAway"));
             
             lista.add(st);
         }
@@ -223,7 +233,7 @@ public class Tabela extends AbstractDomainObject {
     public String koloneZaInsert() {
         return " (turnirID, timID, homeWins, homeWinsPenalty, homeLossesPenalty, homeLosses,"
                 + " awayWins, awayWinsPenalty, awayLossesPenalty, awayLosses, "
-                + "scoredHome, allowedHome, scoredAway, allowedAway, points) ";
+                + "scoredHome, allowedHome, scoredAway, allowedAway, pointsHome, pointsAway) ";
     }
 
     @Override
@@ -247,7 +257,8 @@ public class Tabela extends AbstractDomainObject {
                 + allowedHome + ", "
                 + scoredAway + ", "
                 + allowedAway + ", "
-                + points;
+                + pointsHome + ", "
+                + pointsAway;
     }
 
     @Override
@@ -264,11 +275,12 @@ public class Tabela extends AbstractDomainObject {
                 + "allowedHome = " + allowedHome + ", "
                 + "scoredAway = " + scoredAway + ", "
                 + "allowedAway = " + allowedAway + ", "
-                + "points = " + points;
+                + "pointsHome = " + pointsHome + ", "
+                + "pointsAway = " + pointsAway;
     }
 
     @Override
     public String uslov() {
-        return "where st.turnirid = " + turnir.getTurnirID() + " order by points desc, (scoredHome + scoredAway - allowedHome - allowedAway) DESC ";
+        return "where st.turnirid = " + turnir.getTurnirID() + " order by (pointsHome + pointsAway) desc, (scoredHome + scoredAway - allowedHome - allowedAway) DESC ";
     }
 }

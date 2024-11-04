@@ -235,10 +235,10 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
                 .addComponent(pnlUtakmice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnZatvori)
                     .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnIzmeni)
-                        .addComponent(btnObrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnObrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnZatvori, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -470,7 +470,7 @@ public class FormAzuriranjeTurnira extends javax.swing.JDialog {
         lblDP.setText(bundle.getString("datum_pocetka"));
         lblGrad.setText(bundle.getString("grad"));
         lblNaziv.setText(bundle.getString("naziv"));
-        lblOpis.setText(bundle.getString("opis"));
+        lblOpis.setText(bundle.getString("tip_turnira"));
         
         btnAzurirajUtakmicu.setText(bundle.getString("azuriraj_utakmicu"));
         btnObrisi.setText(bundle.getString("obrisi_turnir"));

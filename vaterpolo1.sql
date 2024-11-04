@@ -1,6 +1,6 @@
 /*
-SQLyog Community v13.2.0 (64 bit)
-MySQL - 10.4.28-MariaDB : Database - vaterpolo1
+SQLyog Community v13.3.0 (64 bit)
+MySQL - 10.4.32-MariaDB : Database - vaterpolo1
 *********************************************************************
 */
 
@@ -97,6 +97,49 @@ insert  into `igrac`(`TimID`,`BrojKapice`,`Pozicija`,`VaterpolistaID`) values
 (10,1,'Golman',19),
 (10,2,'Bek',20);
 
+/*Table structure for table `tabela` */
+
+DROP TABLE IF EXISTS `tabela`;
+
+CREATE TABLE `tabela` (
+  `TurnirID` bigint(10) unsigned NOT NULL,
+  `TimID` bigint(10) unsigned NOT NULL,
+  `homeWins` int(7) DEFAULT NULL,
+  `homeWinsPenalty` int(7) DEFAULT NULL,
+  `homeLossesPenalty` int(7) DEFAULT NULL,
+  `homeLosses` int(7) DEFAULT NULL,
+  `awayWins` int(7) DEFAULT NULL,
+  `awayWinsPenalty` int(7) DEFAULT NULL,
+  `awayLossesPenalty` int(7) DEFAULT NULL,
+  `awayLosses` int(7) DEFAULT NULL,
+  `scoredHome` int(7) DEFAULT NULL,
+  `allowedHome` int(7) DEFAULT NULL,
+  `scoredAway` int(7) DEFAULT NULL,
+  `allowedAway` int(7) DEFAULT NULL,
+  `pointsHome` int(7) DEFAULT NULL,
+  `pointsAway` int(7) DEFAULT NULL,
+  PRIMARY KEY (`TurnirID`,`TimID`),
+  KEY `fk_tabelatim_id` (`TimID`),
+  CONSTRAINT `fk_tabelatim_id` FOREIGN KEY (`TimID`) REFERENCES `tim` (`TimID`),
+  CONSTRAINT `fk_tabelaturnir_id` FOREIGN KEY (`TurnirID`) REFERENCES `turnir` (`TurnirID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tabela` */
+
+insert  into `tabela`(`TurnirID`,`TimID`,`homeWins`,`homeWinsPenalty`,`homeLossesPenalty`,`homeLosses`,`awayWins`,`awayWinsPenalty`,`awayLossesPenalty`,`awayLosses`,`scoredHome`,`allowedHome`,`scoredAway`,`allowedAway`,`pointsHome`,`pointsAway`) values 
+(52,1,1,0,0,2,2,0,0,1,30,34,27,30,3,6),
+(52,2,1,0,0,2,0,0,0,3,35,34,16,30,3,0),
+(52,3,2,0,1,0,2,0,0,1,36,27,37,31,7,6),
+(52,4,2,0,0,1,2,0,0,1,21,25,37,32,6,6),
+(52,5,1,1,0,1,1,0,0,2,26,26,32,34,5,3),
+(52,6,2,0,0,1,1,1,1,0,33,24,37,29,6,6),
+(52,7,1,0,0,2,1,0,0,2,34,38,22,29,3,3),
+(53,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(53,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(53,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(53,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(53,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
 /*Table structure for table `tim` */
 
 DROP TABLE IF EXISTS `tim`;
@@ -134,23 +177,25 @@ CREATE TABLE `turnir` (
   `NazivTurnira` varchar(50) NOT NULL,
   `DatumPocetka` date NOT NULL,
   `DatumKraja` date NOT NULL,
-  `SlobodanProlaz` varchar(200) NOT NULL,
+  `TipTurnira` enum('Liga','Kup') NOT NULL,
   `GradID` bigint(10) unsigned NOT NULL,
   `AdministratorID` bigint(10) unsigned NOT NULL,
   `Pobednik` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`TurnirID`),
-  KEY `fk_grad2_id` (`GradID`),
   KEY `fk_admin_id` (`AdministratorID`),
+  KEY `fk_grad2_id` (`GradID`),
   CONSTRAINT `fk_admin_id` FOREIGN KEY (`AdministratorID`) REFERENCES `administrator` (`AdministratorID`),
   CONSTRAINT `fk_grad2_id` FOREIGN KEY (`GradID`) REFERENCES `grad` (`GradID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `turnir` */
 
-insert  into `turnir`(`TurnirID`,`NazivTurnira`,`DatumPocetka`,`DatumKraja`,`SlobodanProlaz`,`GradID`,`AdministratorID`,`Pobednik`) values 
-(1,'Liga Sampiona 2022','2022-04-10','2022-06-10','N/A',8,1,'Partizan'),
-(2,'Liga Sampiona 2023','2023-04-10','2023-06-10','N/A',8,1,'Barseloneta'),
-(3,'Kup Srbije 2023','2023-09-10','2023-11-10','N/A',1,1,'');
+insert  into `turnir`(`TurnirID`,`NazivTurnira`,`DatumPocetka`,`DatumKraja`,`TipTurnira`,`GradID`,`AdministratorID`,`Pobednik`) values 
+(1,'Liga Sampiona 2022','2022-04-10','2022-06-10','Kup',1,1,'Partizan'),
+(2,'Liga Sampiona 2023','2023-04-10','2023-06-10','Kup',2,1,'Barseloneta'),
+(3,'Kup Srbije 2023','2023-09-10','2023-11-10','Kup',3,1,''),
+(52,'Turnir','2023-08-10','2023-08-20','Liga',1,1,'Novi Beograd'),
+(53,'Turnir1','2023-08-10','2023-08-20','Liga',1,1,'');
 
 /*Table structure for table `utakmica` */
 
@@ -196,7 +241,48 @@ insert  into `utakmica`(`TurnirID`,`Kolo`,`RbUtakmice`,`BrojGolovaPrviTim`,`Broj
 (2,'1',4,4,6,10,7,7,0,0),
 (3,'1',1,NULL,NULL,2,1,0,NULL,NULL),
 (3,'Finale',1,NULL,NULL,0,0,0,NULL,NULL),
-(3,'1',2,NULL,NULL,3,4,0,NULL,NULL);
+(3,'1',2,NULL,NULL,3,4,0,NULL,NULL),
+(52,'1',1,11,14,7,1,1,0,0),
+(52,'2',1,12,15,2,3,3,0,0),
+(52,'3',1,10,14,6,4,4,0,0),
+(52,'4',1,11,14,1,4,4,0,0),
+(52,'5',1,12,5,6,7,6,0,0),
+(52,'6',1,12,5,1,2,1,0,0),
+(52,'7',1,8,7,4,5,4,0,0),
+(52,'1',2,12,14,2,5,5,0,0),
+(52,'2',2,7,15,1,6,6,0,0),
+(52,'3',2,9,13,7,3,3,0,0),
+(52,'4',2,10,9,5,3,5,0,0),
+(52,'5',2,13,6,3,1,3,0,0),
+(52,'6',2,10,10,5,6,5,4,2),
+(52,'7',2,12,12,3,6,6,1,4),
+(52,'1',3,11,9,3,4,3,0,0),
+(52,'2',3,14,11,7,5,7,0,0),
+(52,'3',3,6,7,5,1,1,0,0),
+(52,'4',3,11,5,6,2,6,0,0),
+(52,'5',3,7,6,4,2,4,0,0),
+(52,'6',3,6,12,4,7,7,0,0),
+(52,'7',3,11,5,2,7,2,0,0),
+(53,'1',1,NULL,NULL,5,1,0,NULL,NULL),
+(53,'10',1,NULL,NULL,5,2,0,NULL,NULL),
+(53,'2',1,NULL,NULL,1,4,0,NULL,NULL),
+(53,'3',1,NULL,NULL,3,1,0,NULL,NULL),
+(53,'4',1,NULL,NULL,4,5,0,NULL,NULL),
+(53,'5',1,NULL,NULL,2,5,0,NULL,NULL),
+(53,'6',1,NULL,NULL,1,5,0,NULL,NULL),
+(53,'7',1,NULL,NULL,4,1,0,NULL,NULL),
+(53,'8',1,NULL,NULL,1,3,0,NULL,NULL),
+(53,'9',1,NULL,NULL,5,4,0,NULL,NULL),
+(53,'1',2,NULL,NULL,2,3,0,NULL,NULL),
+(53,'10',2,NULL,NULL,4,3,0,NULL,NULL),
+(53,'2',2,NULL,NULL,5,3,0,NULL,NULL),
+(53,'3',2,NULL,NULL,4,2,0,NULL,NULL),
+(53,'4',2,NULL,NULL,1,2,0,NULL,NULL),
+(53,'5',2,NULL,NULL,3,4,0,NULL,NULL),
+(53,'6',2,NULL,NULL,3,2,0,NULL,NULL),
+(53,'7',2,NULL,NULL,3,5,0,NULL,NULL),
+(53,'8',2,NULL,NULL,2,4,0,NULL,NULL),
+(53,'9',2,NULL,NULL,2,1,0,NULL,NULL);
 
 /*Table structure for table `vaterpolista` */
 
@@ -237,6 +323,38 @@ insert  into `vaterpolista`(`VaterpolistaID`,`ImeVaterpoliste`,`PrezimeVaterpoli
 (22,'Dusan','Matkovic','1999-02-01'),
 (23,'Alejandro','Bustos','1997-03-17'),
 (24,'Felipe','Perrone','1986-02-27');
+
+/* Trigger structure for table `tabela` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_points_home_before_update` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `update_points_home_before_update` BEFORE UPDATE ON `tabela` FOR EACH ROW 
+BEGIN
+    SET NEW.pointsHome = 3 * NEW.homeWins
+                   + 2 * NEW.homeWinsPenalty 
+                   + NEW.homeLossesPenalty;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tabela` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_points_away_before_update` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `update_points_away_before_update` BEFORE UPDATE ON `tabela` FOR EACH ROW 
+BEGIN
+    SET NEW.pointsAway = 3 * NEW.awayWins 
+                   + 2 * NEW.awayWinsPenalty 
+                   + NEW.awayLossesPenalty;
+END */$$
+
+
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

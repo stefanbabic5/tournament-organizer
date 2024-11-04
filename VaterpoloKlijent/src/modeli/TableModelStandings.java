@@ -8,6 +8,7 @@ import controller.ClientController;
 import domain.Tabela;
 import domain.Turnir;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
@@ -20,6 +21,17 @@ public class TableModelStandings extends AbstractTableModel {
 
     private ArrayList<Tabela> lista;
     private String[] kolone = {"Tim", "W", "WP", "LP", "L", "GD", "Points"};
+    private int totalHomeAway = 0;
+
+    public int getTotalHomeAway() {
+        return totalHomeAway;
+    }
+
+    public void setTotalHomeAway(int totalHomeAway) {
+        this.totalHomeAway = totalHomeAway;
+        sortiraj();
+        fireTableDataChanged();
+    }
 
     public TableModelStandings() {
         lista = new ArrayList<>();
@@ -56,18 +68,64 @@ public class TableModelStandings extends AbstractTableModel {
             case 0:
                 return st.getTim().getNazivTima();
             case 1:
-                return st.getHomeWins() + st.getAwayWins();
+                switch (totalHomeAway) {
+                    case 0:
+                        return st.getHomeWins() + st.getAwayWins();
+                    case 1:
+                        return st.getHomeWins();
+                    default:
+                        return st.getAwayWins();
+                }
             case 2:
-                return st.getHomeWinsPenalty() + st.getAwayWinsPenalty();
+                switch (totalHomeAway) {
+                    case 0:
+                        return st.getHomeWinsPenalty() + st.getAwayWinsPenalty();
+                    case 1:
+                        return st.getHomeWinsPenalty();
+                    default:
+                        return st.getAwayWinsPenalty();
+                }
             case 3:
-                return st.getHomeLossesPenalty() + st.getAwayLossesPenalty();
+                switch (totalHomeAway) {
+                    case 0:
+                        return st.getHomeLossesPenalty() + st.getAwayLossesPenalty();
+                    case 1:
+                        return st.getHomeLossesPenalty();
+                    default:
+                        return st.getAwayLossesPenalty();
+                }
             case 4:
-                return st.getHomeLosses() + st.getAwayLosses();
+                switch (totalHomeAway) {
+                    case 0:
+                        return st.getHomeLosses() + st.getAwayLosses();
+                    case 1:
+                        return st.getHomeLosses();
+                    default:
+                        return st.getAwayLosses();
+                }
             case 5:
-                String goalDifference = (st.getScoredHome() + st.getScoredAway()) + " : " + (st.getAllowedHome() + st.getAllowedAway());
+                String goalDifference;
+                switch (totalHomeAway) {
+                    case 0:
+                        goalDifference = (st.getScoredHome() + st.getScoredAway()) + " : " + (st.getAllowedHome() + st.getAllowedAway());
+                        break;
+                    case 1:
+                        goalDifference = st.getScoredHome() + " : " + st.getAllowedAway();
+                        break;
+                    default:
+                        goalDifference = st.getScoredAway() + " : " + st.getAllowedAway();
+                        break;
+                }
                 return goalDifference;
             case 6:
-                return st.getPoints();
+                switch (totalHomeAway) {
+                    case 0:
+                        return st.getPointsHome() + st.getPointsAway();
+                    case 1:
+                        return st.getPointsHome();
+                    default:
+                        return st.getPointsAway();
+                }
             default:
                 return null;
         }
@@ -92,5 +150,26 @@ public class TableModelStandings extends AbstractTableModel {
 
     public void setKolone(String[] kolone) {
         this.kolone = kolone;
+    }
+
+    public void sortiraj() {
+        Comparator<Tabela> comparator;
+
+        switch (totalHomeAway) {
+            case 0:
+                comparator = Comparator.comparingInt(t -> t.getPointsHome() + t.getPointsAway());
+                break;
+            case 1:
+                comparator = Comparator.comparingInt(t -> t.getPointsHome());
+                break;
+            case 2:
+                comparator = Comparator.comparingInt(t -> t.getPointsAway());
+                break;
+            default:
+                throw new IllegalArgumentException("Greska");
+        }
+        
+        lista.sort(comparator.reversed());
+        fireTableDataChanged();
     }
 }

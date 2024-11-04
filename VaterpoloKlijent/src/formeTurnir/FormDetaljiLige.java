@@ -5,11 +5,14 @@
 package formeTurnir;
 
 import controller.ClientController;
+import domain.StavkaIzvestaja;
 import domain.Tabela;
 import domain.Turnir;
+import domain.Utakmica;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,6 +23,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import modeli.TableModelStandings;
 import modeli.TableModelUtakmice;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -29,6 +36,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
 
     Turnir t;
     Locale jezik;
+    TableModelStandings tm;
 
     /**
      * Creates new form FormDetaljiLige
@@ -38,7 +46,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         this.t = t;
-        TableModelStandings tm = new TableModelStandings(t);
+        tm = new TableModelStandings(t);
         tblTabela.setModel(tm);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         txtDatumPocetka.setText(sdf.format(t.getDatumPocetka()));
@@ -48,6 +56,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         lblPobedniktxt.setText(t.getPobednik());
         this.jezik = jezik;
         namestiJezik();
+        rbTotal.setSelected(true);
     }
 
     /**
@@ -70,6 +79,9 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         pnlTabela = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblTabela = new javax.swing.JTable();
+        rbTotal = new javax.swing.JRadioButton();
+        rbHome = new javax.swing.JRadioButton();
+        rbAway = new javax.swing.JRadioButton();
         btnZatvori = new javax.swing.JButton();
         btnObrisi = new javax.swing.JButton();
         btnIzmeni = new javax.swing.JButton();
@@ -110,20 +122,53 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(tblTabela);
 
+        rbTotal.setText("Total");
+        rbTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTotalActionPerformed(evt);
+            }
+        });
+
+        rbHome.setText("Home");
+        rbHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbHomeActionPerformed(evt);
+            }
+        });
+
+        rbAway.setText("Away");
+        rbAway.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbAwayActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlTabelaLayout = new javax.swing.GroupLayout(pnlTabela);
         pnlTabela.setLayout(pnlTabelaLayout);
         pnlTabelaLayout.setHorizontalGroup(
             pnlTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTabelaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                .addGroup(pnlTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                    .addGroup(pnlTabelaLayout.createSequentialGroup()
+                        .addComponent(rbTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rbHome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rbAway)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlTabelaLayout.setVerticalGroup(
             pnlTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTabelaLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbTotal)
+                    .addComponent(rbHome)
+                    .addComponent(rbAway))
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -351,47 +396,73 @@ public class FormDetaljiLige extends javax.swing.JDialog {
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
     private void btnIzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzvestajActionPerformed
-//        try {
-//            ArrayList<StavkaIzvestaja> lista = new ArrayList<>();
-//            TableModelUtakmice tm = (TableModelUtakmice) tblTabela.getModel();
-//            for (Utakmica u : tm.getLista()) {
-//                String rezultat;
-//                if (u.getDrugiTim().getTimID() == 0 && u.getKolo().equals("1")) {
-//                    rezultat = "Slobodan prolaz";
-//                } else if (u.getPobednik().getTimID() == 0) {
-//                    rezultat = "TBD";
-//                } else if (u.getBrojGolovaPrviTim() == u.getBrojGolovaDrugiTim()) {
-//                    rezultat = u.getBrojGolovaPrviTim() + " (" + u.getPenaliPrvi() + ") : ("
-//                            + u.getPenaliDrugi() + ") " + u.getBrojGolovaDrugiTim();
-//                } else {
-//                    rezultat = u.getBrojGolovaPrviTim() + " : " + u.getBrojGolovaDrugiTim();
-//                }
-//                StavkaIzvestaja si = new StavkaIzvestaja(u.getKolo(), u.getPrviTim().getNazivTima(), rezultat, u.getDrugiTim().getNazivTima());
-//                lista.add(si);
-//            }
-//
-//            //JasperReport izvestaj = JasperCompileManager.compileReport("./src/resource/izvestaj.jrxml");
-//            HashMap<String, Object> mapa = new HashMap<>();
-//            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-//            String datumi = sdf.format(t.getDatumPocetka()) + " - " + sdf.format(t.getDatumKraja());
-//            mapa.put("datumi", datumi);
-//            mapa.put("naziv", t.getNazivTurnira());
-//            mapa.put("grad", t.getGrad().getNazivGrada());
-//            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(lista);
-//            JasperPrint print = JasperFillManager.fillReport("./src/resource/izvestaj.jasper", mapa, ds);
-//
-//            JasperViewer.viewReport(print, false);
-//            FormPretragaTurnira fp = (FormPretragaTurnira) getParent();
-//            fp.dispose();
-//            this.dispose();
-//        } catch (Exception ex) {
-//            Logger.getLogger(FormDetaljiTurnira.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            ArrayList<StavkaIzvestaja> lista = new ArrayList<>();
+            t.setTip("Kup");
+            ArrayList<Utakmica> utakmice = ClientController.getInstance().getAllUtakmica(t);
+            t.setTip("Liga");
+            for (Utakmica u : utakmice) {
+                String rezultat;
+                if (u.getDrugiTim().getTimID() == 0 && u.getKolo().equals("1")) {
+                    rezultat = "Slobodan prolaz";
+                } else if (u.getPobednik().getTimID() == 0) {
+                    rezultat = "TBD";
+                } else if (u.getBrojGolovaPrviTim() == u.getBrojGolovaDrugiTim()) {
+                    rezultat = u.getBrojGolovaPrviTim() + " (" + u.getPenaliPrvi() + ") : ("
+                            + u.getPenaliDrugi() + ") " + u.getBrojGolovaDrugiTim();
+                } else {
+                    rezultat = u.getBrojGolovaPrviTim() + " : " + u.getBrojGolovaDrugiTim();
+                }
+                StavkaIzvestaja si = new StavkaIzvestaja(u.getKolo(), u.getPrviTim().getNazivTima(), rezultat, u.getDrugiTim().getNazivTima());
+                lista.add(si);
+            }
+
+            //JasperReport izvestaj = JasperCompileManager.compileReport("./src/resource/izvestaj.jrxml");
+            HashMap<String, Object> mapa = new HashMap<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            String datumi = sdf.format(t.getDatumPocetka()) + " - " + sdf.format(t.getDatumKraja());
+            mapa.put("datumi", datumi);
+            mapa.put("naziv", t.getNazivTurnira());
+            mapa.put("grad", "");
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(lista);
+            JasperPrint print = JasperFillManager.fillReport("./src/resource/izvestaj.jasper", mapa, ds);
+
+            JasperViewer.viewReport(print, false);
+            FormPretragaTurnira fp = (FormPretragaTurnira) getParent();
+            fp.dispose();
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(FormDetaljiTurnira.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnIzvestajActionPerformed
 
     private void btnPrikaziUtakmiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrikaziUtakmiceActionPerformed
         new FormUtakmiceLige(this, true, t, jezik).setVisible(true);
     }//GEN-LAST:event_btnPrikaziUtakmiceActionPerformed
+
+    private void rbTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTotalActionPerformed
+        rbTotal.setSelected(true);
+        rbHome.setSelected(false);
+        rbAway.setSelected(false);
+
+        tm.setTotalHomeAway(0);
+    }//GEN-LAST:event_rbTotalActionPerformed
+
+    private void rbHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbHomeActionPerformed
+        rbTotal.setSelected(false);
+        rbHome.setSelected(true);
+        rbAway.setSelected(false);
+
+        tm.setTotalHomeAway(1);
+    }//GEN-LAST:event_rbHomeActionPerformed
+
+    private void rbAwayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAwayActionPerformed
+        rbTotal.setSelected(false);
+        rbHome.setSelected(false);
+        rbAway.setSelected(true);
+
+        tm.setTotalHomeAway(2);
+    }//GEN-LAST:event_rbAwayActionPerformed
 
     /**
      * @param args the command line arguments
@@ -413,6 +484,9 @@ public class FormDetaljiLige extends javax.swing.JDialog {
     private javax.swing.JLabel lblPobedniktxt;
     private javax.swing.JPanel pnlTabela;
     private javax.swing.JPanel pnlTurnir;
+    private javax.swing.JRadioButton rbAway;
+    private javax.swing.JRadioButton rbHome;
+    private javax.swing.JRadioButton rbTotal;
     private javax.swing.JTable tblTabela;
     private javax.swing.JFormattedTextField txtDatumKraja;
     private javax.swing.JFormattedTextField txtDatumPocetka;
@@ -431,7 +505,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         lblDK.setText(bundle.getString("datum_kraja"));
         lblDP.setText(bundle.getString("datum_pocetka"));
         lblNaziv.setText(bundle.getString("naziv"));
-        lblOpis.setText(bundle.getString("opis"));
+        lblOpis.setText(bundle.getString("tip_turnira"));
         lblPobednik.setText(bundle.getString("pobednik_turnir"));
         
         btnIzvestaj.setText(bundle.getString("kreiraj_izvestaj"));

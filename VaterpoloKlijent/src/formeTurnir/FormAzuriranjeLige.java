@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import modeli.TableModelUtakmice;
 
 /**
@@ -31,6 +33,7 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
     boolean isInitialized = false;
     ArrayList<Utakmica> zaIzmenu = new ArrayList<>();
     Utakmica u;
+    boolean sim = false;
 
     Tabela st1;
     Tabela st2;
@@ -48,6 +51,7 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
         this.t.setTabela(st);
         popuniBrojKola();
         namestiJezik();
+        postaviModel();
         isInitialized = true;
     }
 
@@ -67,6 +71,9 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
         btnTabela = new javax.swing.JButton();
         btnAzurirajUtakmicu = new javax.swing.JButton();
         btnZavrsiTurnir = new javax.swing.JButton();
+        btnSacuvaj = new javax.swing.JButton();
+        btnZatvori = new javax.swing.JButton();
+        btnObrisi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -114,23 +121,48 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
             }
         });
 
+        btnSacuvaj.setText("Sacuvaj izmene");
+
+        btnZatvori.setText("Zatvori");
+        btnZatvori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZatvoriActionPerformed(evt);
+            }
+        });
+
+        btnObrisi.setText("Obrisi turnir");
+        btnObrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(btnAzurirajUtakmicu, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnZavrsiTurnir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lblBrojKola)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAzurirajUtakmicu, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnObrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnZavrsiTurnir, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBrojKola)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbBrojKola, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSacuvaj, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbBrojKola, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,23 +171,27 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBrojKola)
-                    .addComponent(cmbBrojKola, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbBrojKola, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTabela))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAzurirajUtakmicu)
-                    .addComponent(btnZavrsiTurnir))
-                .addGap(10, 10, 10)
-                .addComponent(btnTabela)
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(btnZavrsiTurnir)
+                    .addComponent(btnObrisi))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnZatvori)
+                    .addComponent(btnSacuvaj))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTabelaActionPerformed
-        new FormStandings(this, true, t).setVisible(true);
+        new FormStandings(this, true, t, jezik).setVisible(true);
     }//GEN-LAST:event_btnTabelaActionPerformed
 
     private void cmbBrojKolaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBrojKolaActionPerformed
@@ -205,6 +241,10 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
     private void btnZavrsiTurnirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZavrsiTurnirActionPerformed
         try {
             simulirajUtakmice();
+            t.setUtakmice(zaIzmenu);
+            t.setTabela(st);
+            ClientController.getInstance().updateTurnir(t);
+
             st = ClientController.getInstance().getAllTabela(t);
             t.setPobednik(st.get(0).getTim().toString());
             t.setUtakmice(new ArrayList<>());
@@ -221,13 +261,45 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnZavrsiTurnirActionPerformed
 
+    private void btnZatvoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZatvoriActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnZatvoriActionPerformed
+
+    private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+
+        int result = JOptionPane.showConfirmDialog(this,
+            ResourceBundle.getBundle("resource/messages").getString("brisanje_turnir_potvrda"),
+            ResourceBundle.getBundle("resource/messages").getString("konfirmacija"),
+            JOptionPane.YES_NO_OPTION);
+
+        if (result == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+                ClientController.getInstance().deleteTurnir(t);
+                FormPretragaTurnira fp = (FormPretragaTurnira) getParent();
+                fp.popuniTabele();
+                JOptionPane.showMessageDialog(this,
+                    ResourceBundle.getBundle("resource/messages").getString("brisanje_turnir"));
+                this.dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(FormDetaljiTurnira.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAzurirajUtakmicu;
+    private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnSacuvaj;
     private javax.swing.JButton btnTabela;
+    private javax.swing.JButton btnZatvori;
     private javax.swing.JButton btnZavrsiTurnir;
     private javax.swing.JComboBox cmbBrojKola;
     private javax.swing.JScrollPane jScrollPane1;
@@ -240,6 +312,15 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
 
         setTitle(bundle.getString("detalji_turnir"));
 
+        lblBrojKola.setText(bundle.getString("kolo"));
+        
+        btnAzurirajUtakmicu.setText(bundle.getString("azuriraj_utakmicu"));
+        btnSacuvaj.setText(bundle.getString("azuriraj_turnir"));
+        btnTabela.setText(bundle.getString("prikazi_tabelu"));
+        btnObrisi.setText(bundle.getString("obrisi_turnir"));
+        btnZatvori.setText(bundle.getString("close"));
+        btnZavrsiTurnir.setText(bundle.getString("zavrsi_turnir"));
+
         String[] kolone = {bundle.getString("kolo"), bundle.getString("rb"), bundle.getString("prvi_tim"),
             bundle.getString("rezultat"), bundle.getString("drugi_tim"), bundle.getString("pobednik")};
         TableModelUtakmice tm = new TableModelUtakmice();
@@ -247,6 +328,18 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
         tblUtakmice.setModel(tm);
         popuniUtakmice();
 
+    }
+
+    private void postaviModel() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblUtakmice.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblUtakmice.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        tblUtakmice.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        tblUtakmice.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tblUtakmice.getColumnModel().getColumn(1).setPreferredWidth(20);
     }
 
     private void popuniUtakmice() {
@@ -281,7 +374,6 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
         TableModelUtakmice tm = (TableModelUtakmice) tblUtakmice.getModel();
         try {
             zaIzmenu.add(u);
-            t.setUtakmice(zaIzmenu);
 
             st1.setScoredHome(st1.getScoredHome() + u.getBrojGolovaPrviTim());
             st1.setAllowedHome(st1.getAllowedHome() + u.getBrojGolovaDrugiTim());
@@ -304,12 +396,18 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
                     st2.setAwayWinsPenalty(st2.getAwayWinsPenalty() + 1);
                 }
             }
+            if (!sim) {
+                t.setTabela(st);
+                t.setUtakmice(zaIzmenu);
 
-            t.setTabela(st);
-            ClientController.getInstance().updateTurnir(t);
+                ClientController.getInstance().updateTurnir(t);
 
-            tm.fireTableDataChanged();
-            zaIzmenu.clear();
+                tm.fireTableDataChanged();
+                zaIzmenu.clear();
+            } else {
+                t.setTabela(st);
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(FormAzuriranjeLige.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -326,6 +424,7 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
 
     private void simulirajUtakmice() {
         try {
+            sim = true;
             t.setTip("Kup");
             ArrayList<Utakmica> utakmice = ClientController.getInstance().getAllUtakmica(t);
             t.setTip("Liga");

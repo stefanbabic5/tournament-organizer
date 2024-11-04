@@ -16,7 +16,6 @@ import domain.Turnir;
 import domain.Utakmica;
 import formeTim.FormNoviTim;
 import formeTim.FormPretragaTimova;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,6 +105,7 @@ public class MainForm extends javax.swing.JFrame {
         lblUlogovani.setText("Ulogovani");
 
         pnlTurnir.setBorder(javax.swing.BorderFactory.createTitledBorder("Title"));
+        pnlTurnir.setName(""); // NOI18N
 
         lblGrad.setText("Grad:");
 
@@ -221,7 +221,7 @@ public class MainForm extends javax.swing.JFrame {
         pnlUcesnikLayout.setVerticalGroup(
             pnlUcesnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUcesnikLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlUcesnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTimovi)
                     .addComponent(cmbTim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -239,8 +239,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(btnMoveDown)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnMoveToBottom))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
         btnEvidentiraj.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -254,6 +253,11 @@ public class MainForm extends javax.swing.JFrame {
         cbZreb.setText("Generisi zreb");
 
         cmbTip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kup", "Liga" }));
+        cmbTip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTipActionPerformed(evt);
+            }
+        });
 
         lblTip.setText("Tip turnira");
 
@@ -281,13 +285,14 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(lblDK)
                             .addComponent(lblTip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtDatumPocetka, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
-                            .addComponent(cmbGrad, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNaziv, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtDatumKraja)
-                            .addComponent(cbZreb, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbTip, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtDatumPocetka, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
+                                .addComponent(txtNaziv, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtDatumKraja)
+                                .addComponent(cbZreb, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbTip, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbGrad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         pnlTurnirLayout.setVerticalGroup(
@@ -297,10 +302,6 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNaziv)
                     .addComponent(txtNaziv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblGrad)
-                    .addComponent(cmbGrad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDP)
@@ -313,9 +314,13 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTip))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(cbZreb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbZreb)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlTurnirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbGrad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblGrad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(pnlUcesnik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEvidentiraj, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,15 +430,13 @@ public class MainForm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblUlogovani)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnEngleski)
-                        .addComponent(btnSrpski)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEngleski)
+                    .addComponent(btnSrpski)
+                    .addComponent(lblUlogovani))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTurnir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlTurnir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -599,6 +602,19 @@ public class MainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnMoveDownActionPerformed
 
+    private void cmbTipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipActionPerformed
+        ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
+        if (cmbTip.getSelectedItem().equals("Kup")) {
+            cbZreb.setText(bundle.getString("zreb"));
+            lblGrad.setEnabled(true);
+            cmbGrad.setEnabled(true);
+        } else if (cmbTip.getSelectedItem().equals("Liga")) {
+            cbZreb.setText(bundle.getString("round_robin"));
+            lblGrad.setEnabled(false);
+            cmbGrad.setEnabled(false);
+        }
+    }//GEN-LAST:event_cmbTipActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
     private javax.swing.JButton btnEngleski;
@@ -742,7 +758,7 @@ public class MainForm extends javax.swing.JFrame {
             int brojKola = brojEkipa % 2 == 0 ? brojEkipa - 1 : brojEkipa;
 
             if (brojEkipa % 2 != 0) {
-                timovi.add(prazan);
+                timovi.add(1, prazan);
                 brojEkipa++;
             }
             ArrayList<Utakmica> sveUtakmice = new ArrayList<>();
@@ -793,7 +809,7 @@ public class MainForm extends javax.swing.JFrame {
             ArrayList<Tabela> tabele = new ArrayList<>();
 
             for (Tim t : timovi) {
-                Tabela tabela = new Tabela(null, t, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                Tabela tabela = new Tabela(null, t, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 tabele.add(tabela);
             }
 
@@ -922,7 +938,7 @@ public class MainForm extends javax.swing.JFrame {
         lblTimovi.setText(bundle.getString("timovi"));
         lblTip.setText(bundle.getString("tip_turnira"));
 
-        cbZreb.setText(bundle.getString("generisi"));
+        cbZreb.setText(bundle.getString("zreb"));
 
         btnDodaj.setText(bundle.getString("dodaj_tim"));
         btnObrisi.setText(bundle.getString("obrisi_tim"));

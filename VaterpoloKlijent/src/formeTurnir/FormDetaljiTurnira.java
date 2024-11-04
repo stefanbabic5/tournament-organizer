@@ -426,7 +426,7 @@ public class FormDetaljiTurnira extends javax.swing.JDialog {
         lblDP.setText(bundle.getString("datum_pocetka"));
         lblGrad.setText(bundle.getString("grad"));
         lblNaziv.setText(bundle.getString("naziv"));
-        lblOpis.setText(bundle.getString("opis"));
+        lblOpis.setText(bundle.getString("tip_turnira"));
         lblPobednik.setText(bundle.getString("pobednik_turnir"));
         
         btnIzvestaj.setText(bundle.getString("kreiraj_izvestaj"));
