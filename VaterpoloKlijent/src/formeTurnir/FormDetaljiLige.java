@@ -47,7 +47,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.t = t;
         tm = new TableModelStandings(t);
-        tblTabela.setModel(tm);
+        tblStandings.setModel(tm);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         txtDatumPocetka.setText(sdf.format(t.getDatumPocetka()));
         txtDatumKraja.setText(sdf.format(t.getDatumKraja()));
@@ -78,7 +78,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
         txtDatumKraja = new javax.swing.JFormattedTextField();
         pnlTabela = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblTabela = new javax.swing.JTable();
+        tblStandings = new javax.swing.JTable();
         rbTotal = new javax.swing.JRadioButton();
         rbHome = new javax.swing.JRadioButton();
         rbAway = new javax.swing.JRadioButton();
@@ -109,7 +109,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
 
         pnlTabela.setBorder(javax.swing.BorderFactory.createTitledBorder("Utakmice"));
 
-        tblTabela.setModel(new javax.swing.table.DefaultTableModel(
+        tblStandings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -120,7 +120,7 @@ public class FormDetaljiLige extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tblTabela);
+        jScrollPane2.setViewportView(tblStandings);
 
         rbTotal.setText("Total");
         rbTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -374,7 +374,6 @@ public class FormDetaljiLige extends javax.swing.JDialog {
             }
 
             //TableModelUtakmice tm = (TableModelUtakmice) tblTabela.getModel();
-
             t.setNazivTurnira(naziv);
             t.setDatumPocetka(datumPocetka);
             t.setDatumKraja(datumKraja);
@@ -487,38 +486,38 @@ public class FormDetaljiLige extends javax.swing.JDialog {
     private javax.swing.JRadioButton rbAway;
     private javax.swing.JRadioButton rbHome;
     private javax.swing.JRadioButton rbTotal;
-    private javax.swing.JTable tblTabela;
+    private javax.swing.JTable tblStandings;
     private javax.swing.JFormattedTextField txtDatumKraja;
     private javax.swing.JFormattedTextField txtDatumPocetka;
     private javax.swing.JTextField txtNaziv;
     // End of variables declaration//GEN-END:variables
 
-
     private void namestiJezik() {
         ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
-        
+
         setTitle(bundle.getString("detalji_turnir"));
-        
+
         pnlTurnir.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("turnir")));
         //pnlUtakmice.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("utakmice")));
-        
+
         lblDK.setText(bundle.getString("datum_kraja"));
         lblDP.setText(bundle.getString("datum_pocetka"));
         lblNaziv.setText(bundle.getString("naziv"));
         lblOpis.setText(bundle.getString("tip_turnira"));
         lblPobednik.setText(bundle.getString("pobednik_turnir"));
-        
+
         btnIzvestaj.setText(bundle.getString("kreiraj_izvestaj"));
         btnObrisi.setText(bundle.getString("obrisi_turnir"));
         btnIzmeni.setText(bundle.getString("azuriraj_turnir"));
         btnZatvori.setText(bundle.getString("close"));
-        
-//        String[] kolone = {bundle.getString("kolo"), bundle.getString("rb"), bundle.getString("prvi_tim"),
-//            bundle.getString("rezultat"), bundle.getString("drugi_tim"), bundle.getString("pobednik")};
-//        TableModelUtakmice tm = new TableModelUtakmice(t);
-//        tm.setKolone(kolone);
-//        tblTabela.setModel(tm);
-        
+        btnPrikaziUtakmice.setText(bundle.getString("prikazi_utakmice"));
+
+        String[] kolone = {bundle.getString("tim"), bundle.getString("pobede"), bundle.getString("pobede_p"),
+            bundle.getString("porazi_p"), bundle.getString("porazi"), bundle.getString("gol_razlika"), bundle.getString("poeni")};
+        tm = new TableModelStandings(t);
+        tm.setKolone(kolone);
+        tblStandings.setModel(tm);
+
     }
-    
+
 }

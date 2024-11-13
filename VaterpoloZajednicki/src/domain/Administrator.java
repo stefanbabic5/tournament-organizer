@@ -108,6 +108,11 @@ public class Administrator extends AbstractDomainObject {
     }
 
     @Override
+    public String koloneZaSelect() {
+        return " * FROM ";
+    }
+
+    @Override
     public String koloneZaInsert() {
         return " (Ime, Prezime, Username, Password) ";
     }

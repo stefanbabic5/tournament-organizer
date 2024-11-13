@@ -126,20 +126,6 @@ CREATE TABLE `tabela` (
 
 /*Data for the table `tabela` */
 
-insert  into `tabela`(`TurnirID`,`TimID`,`homeWins`,`homeWinsPenalty`,`homeLossesPenalty`,`homeLosses`,`awayWins`,`awayWinsPenalty`,`awayLossesPenalty`,`awayLosses`,`scoredHome`,`allowedHome`,`scoredAway`,`allowedAway`,`pointsHome`,`pointsAway`) values 
-(52,1,1,0,0,2,2,0,0,1,30,34,27,30,3,6),
-(52,2,1,0,0,2,0,0,0,3,35,34,16,30,3,0),
-(52,3,2,0,1,0,2,0,0,1,36,27,37,31,7,6),
-(52,4,2,0,0,1,2,0,0,1,21,25,37,32,6,6),
-(52,5,1,1,0,1,1,0,0,2,26,26,32,34,5,3),
-(52,6,2,0,0,1,1,1,1,0,33,24,37,29,6,6),
-(52,7,1,0,0,2,1,0,0,2,34,38,22,29,3,3),
-(53,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(53,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(53,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(53,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(53,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-
 /*Table structure for table `tim` */
 
 DROP TABLE IF EXISTS `tim`;
@@ -186,16 +172,14 @@ CREATE TABLE `turnir` (
   KEY `fk_grad2_id` (`GradID`),
   CONSTRAINT `fk_admin_id` FOREIGN KEY (`AdministratorID`) REFERENCES `administrator` (`AdministratorID`),
   CONSTRAINT `fk_grad2_id` FOREIGN KEY (`GradID`) REFERENCES `grad` (`GradID`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `turnir` */
 
 insert  into `turnir`(`TurnirID`,`NazivTurnira`,`DatumPocetka`,`DatumKraja`,`TipTurnira`,`GradID`,`AdministratorID`,`Pobednik`) values 
 (1,'Liga Sampiona 2022','2022-04-10','2022-06-10','Kup',1,1,'Partizan'),
 (2,'Liga Sampiona 2023','2023-04-10','2023-06-10','Kup',2,1,'Barseloneta'),
-(3,'Kup Srbije 2023','2023-09-10','2023-11-10','Kup',3,1,''),
-(52,'Turnir','2023-08-10','2023-08-20','Liga',1,1,'Novi Beograd'),
-(53,'Turnir1','2023-08-10','2023-08-20','Liga',1,1,'');
+(3,'Kup Srbije 2023','2023-09-10','2023-11-10','Kup',3,1,'');
 
 /*Table structure for table `utakmica` */
 
@@ -241,48 +225,7 @@ insert  into `utakmica`(`TurnirID`,`Kolo`,`RbUtakmice`,`BrojGolovaPrviTim`,`Broj
 (2,'1',4,4,6,10,7,7,0,0),
 (3,'1',1,NULL,NULL,2,1,0,NULL,NULL),
 (3,'Finale',1,NULL,NULL,0,0,0,NULL,NULL),
-(3,'1',2,NULL,NULL,3,4,0,NULL,NULL),
-(52,'1',1,11,14,7,1,1,0,0),
-(52,'2',1,12,15,2,3,3,0,0),
-(52,'3',1,10,14,6,4,4,0,0),
-(52,'4',1,11,14,1,4,4,0,0),
-(52,'5',1,12,5,6,7,6,0,0),
-(52,'6',1,12,5,1,2,1,0,0),
-(52,'7',1,8,7,4,5,4,0,0),
-(52,'1',2,12,14,2,5,5,0,0),
-(52,'2',2,7,15,1,6,6,0,0),
-(52,'3',2,9,13,7,3,3,0,0),
-(52,'4',2,10,9,5,3,5,0,0),
-(52,'5',2,13,6,3,1,3,0,0),
-(52,'6',2,10,10,5,6,5,4,2),
-(52,'7',2,12,12,3,6,6,1,4),
-(52,'1',3,11,9,3,4,3,0,0),
-(52,'2',3,14,11,7,5,7,0,0),
-(52,'3',3,6,7,5,1,1,0,0),
-(52,'4',3,11,5,6,2,6,0,0),
-(52,'5',3,7,6,4,2,4,0,0),
-(52,'6',3,6,12,4,7,7,0,0),
-(52,'7',3,11,5,2,7,2,0,0),
-(53,'1',1,NULL,NULL,5,1,0,NULL,NULL),
-(53,'10',1,NULL,NULL,5,2,0,NULL,NULL),
-(53,'2',1,NULL,NULL,1,4,0,NULL,NULL),
-(53,'3',1,NULL,NULL,3,1,0,NULL,NULL),
-(53,'4',1,NULL,NULL,4,5,0,NULL,NULL),
-(53,'5',1,NULL,NULL,2,5,0,NULL,NULL),
-(53,'6',1,NULL,NULL,1,5,0,NULL,NULL),
-(53,'7',1,NULL,NULL,4,1,0,NULL,NULL),
-(53,'8',1,NULL,NULL,1,3,0,NULL,NULL),
-(53,'9',1,NULL,NULL,5,4,0,NULL,NULL),
-(53,'1',2,NULL,NULL,2,3,0,NULL,NULL),
-(53,'10',2,NULL,NULL,4,3,0,NULL,NULL),
-(53,'2',2,NULL,NULL,5,3,0,NULL,NULL),
-(53,'3',2,NULL,NULL,4,2,0,NULL,NULL),
-(53,'4',2,NULL,NULL,1,2,0,NULL,NULL),
-(53,'5',2,NULL,NULL,3,4,0,NULL,NULL),
-(53,'6',2,NULL,NULL,3,2,0,NULL,NULL),
-(53,'7',2,NULL,NULL,3,5,0,NULL,NULL),
-(53,'8',2,NULL,NULL,2,4,0,NULL,NULL),
-(53,'9',2,NULL,NULL,2,1,0,NULL,NULL);
+(3,'1',2,NULL,NULL,3,4,0,NULL,NULL);
 
 /*Table structure for table `vaterpolista` */
 

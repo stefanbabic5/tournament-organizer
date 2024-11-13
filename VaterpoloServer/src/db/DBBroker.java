@@ -51,7 +51,7 @@ public class DBBroker {
     }
 
     public ArrayList<AbstractDomainObject> select(AbstractDomainObject ado) throws SQLException {
-        String upit = "SELECT * FROM " + ado.nazivTabele() + " " + ado.alijas()
+        String upit = "SELECT " + ado.koloneZaSelect()+ " " + ado.nazivTabele() + " " + ado.alijas()
                 + " " + ado.join() + " " + ado.uslov();
         System.out.println("Upit: " + upit);
         Statement s = connection.createStatement();
@@ -83,25 +83,4 @@ public class DBBroker {
         s.executeUpdate(upit);
     }
 
-    public int getBrojKola(Turnir t) throws SQLException {
-        String upit = "SELECT kolo FROM utakmica WHERE pobednikID = 0 and turnirID = " + t.getTurnirID() + " order by kolo limit 1";
-        System.out.println("Upit: " + upit);
-        Statement s = connection.createStatement();
-        ResultSet rs = s.executeQuery(upit);
-
-        if (rs.next()) {
-            return Integer.parseInt(rs.getString("kolo"));
-        } else {
-            upit = "SELECT MAX(CAST(kolo AS UNSIGNED)) AS kolo FROM utakmica WHERE turnirID = " + t.getTurnirID();
-            System.out.println("Upit za poslednje kolo: " + upit);
-
-            rs = s.executeQuery(upit);
-            if (rs.next()) {
-                return Integer.parseInt(rs.getString("kolo"));
-            } else {
-                return -1;
-            }
-        }
-
-    }
 }

@@ -6,6 +6,7 @@ package thread;
 
 import controller.ServerController;
 import domain.Administrator;
+import domain.BrojKolaHelper;
 import domain.Tim;
 import domain.Turnir;
 import domain.Vaterpolista;
@@ -108,7 +109,7 @@ public class ThreadClient extends Thread {
                     response.setData(ServerController.getInstance().getAllTabela((Turnir) request.getData()));
                     break;
                 case Operation.GET_BROJ_KOLA:
-                    response.setData(ServerController.getInstance().getBrojKola((Turnir) request.getData()));
+                    response.setData(ServerController.getInstance().getBrojKola((BrojKolaHelper) request.getData()));
                     break;
                 case Operation.LOGIN:
                     Administrator administrator = (Administrator) request.getData();

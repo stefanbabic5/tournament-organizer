@@ -5,12 +5,15 @@
 package formeTurnir;
 
 import controller.ClientController;
+import domain.BrojKolaHelper;
 import domain.Turnir;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import modeli.TableModelUtakmice;
 
 /**
@@ -34,6 +37,7 @@ public class FormUtakmiceLige extends javax.swing.JDialog {
         this.jezik = jezik;
         popuniBrojKola();
         namestiJezik();
+        postaviModel();
         isInitialized = true;
     }
 
@@ -86,17 +90,17 @@ public class FormUtakmiceLige extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBrojKola)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbBrojKola, 0, 521, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
+                        .addComponent(cmbBrojKola, 0, 671, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbBrojKola, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBrojKola))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbBrojKola)
+                    .addComponent(lblBrojKola, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -123,6 +127,8 @@ public class FormUtakmiceLige extends javax.swing.JDialog {
         ResourceBundle bundle = ResourceBundle.getBundle("resource/messages");
 
         setTitle(bundle.getString("detalji_turnir"));
+        
+        lblBrojKola.setText(bundle.getString("kolo"));
 
         String[] kolone = {bundle.getString("kolo"), bundle.getString("rb"), bundle.getString("prvi_tim"),
             bundle.getString("rezultat"), bundle.getString("drugi_tim"), bundle.getString("pobednik")};
@@ -145,7 +151,8 @@ public class FormUtakmiceLige extends javax.swing.JDialog {
 
     private void popuniBrojKola() {
         try {
-            int broj = ClientController.getInstance().getBrojKola(t);
+            BrojKolaHelper bkh = new BrojKolaHelper(t, 0);
+            int broj = ClientController.getInstance().getBrojKola(bkh);
             cmbBrojKola.removeAllItems();
             for (int i = 1; i <= broj; i++) {
                 cmbBrojKola.addItem(i);
@@ -154,6 +161,18 @@ public class FormUtakmiceLige extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(FormAzuriranjeLige.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void postaviModel() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblUtakmice.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblUtakmice.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        tblUtakmice.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        tblUtakmice.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tblUtakmice.getColumnModel().getColumn(1).setPreferredWidth(20);
     }
 
 }

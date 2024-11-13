@@ -131,6 +131,11 @@ public class Utakmica extends AbstractDomainObject {
         rs.close();
         return lista;
     }
+    
+    @Override
+    public String koloneZaSelect() {
+        return " * FROM ";
+    }
 
     @Override
     public String koloneZaInsert() {

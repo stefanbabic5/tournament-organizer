@@ -8,7 +8,9 @@
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/db/DBBroker.java</file>
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/turnir/SOUpdateTurnir.java</file>
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/tabela/SOGetAllTabela.java</file>
+            <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/vaterpolista/SOGetAllVaterpolista.java</file>
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/turnir/SOAddTurnir.java</file>
+            <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/turnir/SOGetAllTurnir.java</file>
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/so/utakmica/SOGetAllUtakmica.java</file>
             <file>file:/C:/Users/stefan/Documents/NetBeansProjects/diplomski/VaterpoloServer/src/controller/ServerController.java</file>
         </group>

@@ -5,6 +5,7 @@
 package formeTurnir;
 
 import controller.ClientController;
+import domain.BrojKolaHelper;
 import domain.Tabela;
 import domain.Tim;
 import domain.Turnir;
@@ -354,7 +355,8 @@ public class FormAzuriranjeLige extends javax.swing.JDialog {
 
     private void popuniBrojKola() {
         try {
-            int broj = ClientController.getInstance().getBrojKola(t);
+            BrojKolaHelper bkh = new BrojKolaHelper(t, 0);
+            int broj = ClientController.getInstance().getBrojKola(bkh);
             cmbBrojKola.removeAllItems();
             for (int i = 1; i <= broj; i++) {
                 cmbBrojKola.addItem(i);

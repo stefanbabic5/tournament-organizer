@@ -5,6 +5,7 @@
 package controller;
 
 import domain.Administrator;
+import domain.BrojKolaHelper;
 import domain.Grad;
 import domain.Igrac;
 import domain.StavkaIzvestaja;
@@ -138,8 +139,8 @@ public class ClientController {
 
     }
 
-    public int getBrojKola(Turnir t) throws Exception {
-        return (int) sendRequest(Operation.GET_BROJ_KOLA, t);
+    public int getBrojKola(BrojKolaHelper bkh) throws Exception {
+        return (int) sendRequest(Operation.GET_BROJ_KOLA, bkh);
     }
 
 }

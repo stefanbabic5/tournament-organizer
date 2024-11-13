@@ -6,7 +6,9 @@ package so.turnir;
 
 import db.DBBroker;
 import domain.AbstractDomainObject;
+import domain.BrojKolaHelper;
 import domain.Turnir;
+import java.util.ArrayList;
 import so.AbstractSO;
 
 /**
@@ -19,15 +21,15 @@ public class SOGetBrojKola extends AbstractSO {
     
     @Override
     protected void validate(AbstractDomainObject ado) throws Exception {
-        if (!(ado instanceof Turnir)) {
+        if (!(ado instanceof BrojKolaHelper)) {
             throw new Exception("nije_instanca");
         }
     }
 
     @Override
     protected void execute(AbstractDomainObject ado) throws Exception {
-        Turnir t = (Turnir) ado;
-        broj = DBBroker.getInstance().getBrojKola(t);
+        ArrayList<AbstractDomainObject> brojKola = DBBroker.getInstance().select(ado);
+        broj = ((ArrayList<BrojKolaHelper>) (ArrayList<?>) brojKola).get(0).getBrojKola();
     }
 
     public int getBroj() {

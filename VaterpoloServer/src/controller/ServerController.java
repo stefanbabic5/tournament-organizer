@@ -5,6 +5,7 @@
 package controller;
 
 import domain.Administrator;
+import domain.BrojKolaHelper;
 import domain.Grad;
 import domain.Igrac;
 import domain.Tabela;
@@ -170,9 +171,9 @@ public class ServerController {
         return so.getLista();
     }
 
-    public int getBrojKola(Turnir turnir) throws Exception {
+    public int getBrojKola(BrojKolaHelper bkh) throws Exception {
         SOGetBrojKola so = new SOGetBrojKola();
-        so.templateExecute(turnir);
+        so.templateExecute(bkh);
         return so.getBroj();
     }
 

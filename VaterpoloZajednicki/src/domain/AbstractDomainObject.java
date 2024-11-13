@@ -19,6 +19,7 @@ public abstract class AbstractDomainObject implements Serializable {
     public abstract String alijas();
     public abstract String join();
     public abstract ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException;
+    public abstract String koloneZaSelect();
     public abstract String koloneZaInsert();
     public abstract String vrednostZaPrimarniKljuc();
     public abstract String vrednostiZaInsert();

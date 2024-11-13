@@ -12,32 +12,26 @@ import java.util.ArrayList;
  *
  * @author stefan
  */
-public class Grad extends AbstractDomainObject {
+public class BrojKolaHelper extends AbstractDomainObject {
+    private Turnir turnir;
+    private int brojKola;
 
-    private Long gradID;
-    private String nazivGrada;
-
-    public Grad(Long gradID, String nazivGrada) {
-        this.gradID = gradID;
-        this.nazivGrada = nazivGrada;
+    public BrojKolaHelper() {
     }
 
-    public Grad() {
+    public BrojKolaHelper(Turnir turnir, int brojKola) {
+        this.turnir = turnir;
+        this.brojKola = brojKola;
     }
     
     @Override
-    public String toString() {
-        return nazivGrada;
-    }
-
-    @Override
     public String nazivTabele() {
-        return " Grad ";
+        return "";
     }
 
     @Override
     public String alijas() {
-        return " g ";
+        return "";
     }
 
     @Override
@@ -49,19 +43,21 @@ public class Grad extends AbstractDomainObject {
     public ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException {
         ArrayList<AbstractDomainObject> lista = new ArrayList<>();
 
-        while (rs.next()) {
-            Grad g = new Grad(rs.getLong("GradID"), rs.getString("NazivGrada"));
-
-            lista.add(g);
+        if (rs.next()) {
+            int kolo = rs.getInt("kolo");
+            BrojKolaHelper brojKolaHelper = new BrojKolaHelper(turnir, kolo);
+            lista.add(brojKolaHelper);
         }
 
         rs.close();
         return lista;
     }
-    
+
     @Override
     public String koloneZaSelect() {
-        return " * FROM ";
+        return "IFNULL(" +
+               "(SELECT CAST(kolo AS UNSIGNED) FROM utakmica WHERE pobednikID = 0 AND turnirID = " + turnir.getTurnirID() + " ORDER BY CAST(kolo AS UNSIGNED) LIMIT 1), " +
+               "(SELECT MAX(CAST(kolo AS UNSIGNED)) FROM utakmica WHERE turnirID = " + turnir.getTurnirID() + ")) AS kolo";
     }
 
     @Override
@@ -71,7 +67,7 @@ public class Grad extends AbstractDomainObject {
 
     @Override
     public String vrednostZaPrimarniKljuc() {
-        return " GradID = " + gradID;
+        return "";
     }
 
     @Override
@@ -89,20 +85,20 @@ public class Grad extends AbstractDomainObject {
         return "";
     }
 
-    public Long getGradID() {
-        return gradID;
+    public Turnir getTurnir() {
+        return turnir;
     }
 
-    public void setGradID(Long gradID) {
-        this.gradID = gradID;
+    public void setTurnir(Turnir turnir) {
+        this.turnir = turnir;
     }
 
-    public String getNazivGrada() {
-        return nazivGrada;
+    public int getBrojKola() {
+        return brojKola;
     }
 
-    public void setNazivGrada(String nazivGrada) {
-        this.nazivGrada = nazivGrada;
+    public void setBrojKola(int brojKola) {
+        this.brojKola = brojKola;
     }
-
+    
 }
